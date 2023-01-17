@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/screens/profilePage.dart';
+import 'package:ui_event_app/screens/signin_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: ProfilePage()
+      debugShowCheckedModeBanner: false,
+      home: SignInPage()
     );
   }
 }
