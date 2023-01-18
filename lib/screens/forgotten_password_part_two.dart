@@ -76,7 +76,7 @@ class _ForgottenPasswordPartTwoState extends State<ForgottenPasswordPartTwo> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Container(
+                Container( 
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: Center(
                     child: CupertinoButton(
