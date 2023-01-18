@@ -1,20 +1,16 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/global.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class ForgottenPassword extends StatefulWidget {
+  const ForgottenPassword({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<ForgottenPassword> createState() => _ForgottenPasswordState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  bool _obscuretext = false;
+class _ForgottenPasswordState extends State<ForgottenPassword> {
+  bool _obscuretext = true;
   bool _checkValue = true;
   @override
   Widget build(BuildContext context) {
@@ -22,19 +18,10 @@ class _SignInPageState extends State<SignInPage> {
     double screenWidth = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         elevation: 0,
-        backgroundColor: myBlue,
         toolbarHeight: 125,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(65),
-                bottomRight: Radius.circular(65))),
-        title: Center(
-          child: Text(
-            "Se connecter",
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
+        title: Container(),
       ),
       body: ScrollConfiguration(
         behavior: MyBehavior(),
@@ -44,6 +31,19 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: Text(
+                    "Mot de passe oublié",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight / 50,
+                ),
+                Text(
+                  "Définissez votre nouveau mot de passe pour pouvoir vous connecter",
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(
                   height: screenHeight / 20,
                 ),
@@ -81,25 +81,27 @@ class _SignInPageState extends State<SignInPage> {
                           icon: Icon(Icons.visibility_outlined)),
                       prefixIcon: Icon(Icons.lock_outline)),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        value: _checkValue,
-                        onChanged: (value) {
-                          _checkValue = value!;
-                        },
-                        title: Text("Se rappeler"),
-                      ),
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Mot de passe oublié?",
-                          style: TextStyle(color: Colors.black),
-                        ))
-                  ],
+                SizedBox(
+                  height: screenHeight / 30,
+                ),
+                Text("Confirmez le mot de passe"),
+                SizedBox(
+                  height: screenHeight / 50,
+                ),
+                TextFormField(
+                  obscureText: _obscuretext,
+                  decoration: InputDecoration(
+                      prefixIconColor: myBlue,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscuretext = !_obscuretext;
+                            });
+                          },
+                          icon: Icon(Icons.visibility_outlined)),
+                      prefixIcon: Icon(Icons.lock_outline)),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
@@ -107,26 +109,12 @@ class _SignInPageState extends State<SignInPage> {
                     child: CupertinoButton(
                         color: myBlue,
                         child: Text(
-                          "              Connexion            ",
+                          "   Réinitialiser mot de passe      ",
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {}),
                   ),
                 ),
-                Center(
-                  child: TextButton(
-                      onPressed: () {},
-                      child: RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                            text: "Vous n'avez pas de compte? ",
-                            style: TextStyle(color: Colors.black)),
-                        TextSpan(
-                            text: "Inscrivez-vous",
-                            style: TextStyle(
-                                color: myBlue, fontWeight: FontWeight.bold))
-                      ]))),
-                )
               ],
             ),
           ),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ui_event_app/components/global.dart';
+import 'package:ui_event_app/screens/forgotten_password.dart';
+import 'package:ui_event_app/screens/forgotten_password_part_two.dart';
 import 'package:ui_event_app/screens/profilePage.dart';
 import 'package:ui_event_app/screens/signin_page.dart';
+import 'package:ui_event_app/screens/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,14 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: SignInPage()
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: primaryBlue,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: ForgottenPasswordPartTwo());
   }
 }
 
