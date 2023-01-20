@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ui_event_app/screens/signin_page.dart';
+import 'package:ui_event_app/utils/app_func.dart';
 import '../constants/constant.dart';
 class Footer extends StatelessWidget {
   const Footer({Key? key}) : super(key: key);
@@ -22,7 +24,11 @@ class Footer extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
-          TextButton(onPressed: (){},
+          TextButton(onPressed: (){
+
+            navigateToNextPage(context, SignInPage());
+
+          },
               child: Text("Se déconnecter", style: TextStyle(color:Colors.black,fontSize:18 ),textAlign: TextAlign.right,)
           )
         ],

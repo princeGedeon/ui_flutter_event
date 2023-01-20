@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../constants/constant.dart';
 import 'footer.dart';
+import 'global.dart';
 import 'header.dart';
-import 'mybehavior.dart';
+
 
 class WrapperProfile extends StatefulWidget {
   WrapperProfile({Key? key,required this.child}) : super(key: key);
@@ -50,6 +51,7 @@ class _WrapperProfileState extends State<WrapperProfile> {
 
 AppBar customAppBar(){
   return AppBar(
+    backgroundColor: myBlue,
     title:  Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

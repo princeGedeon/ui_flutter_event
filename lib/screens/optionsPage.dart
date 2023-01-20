@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
+import 'package:ui_event_app/screens/profilePage.dart';
 import 'package:ui_event_app/screens/susbcription.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 
@@ -17,7 +18,9 @@ class _OptionsPageState extends State<OptionsPage> {
       child: Column(
         children: [
           SizedBox(height: 100,),
-          ElevatedButton(onPressed: (){},
+          ElevatedButton(onPressed: (){
+            navigateToNextPage(context, ProfilePage());
+          },
             child: Text("COMPLETER VOTRE PROFIL" ,style: TextStyle(color: Colors.black,fontWeight:FontWeight.w700,fontSize:20 ),
             ),
             style: ElevatedButton.styleFrom(minimumSize: Size(300, 50),primary: Colors.white,shape: RoundedRectangleBorder(side: BorderSide(width: 1),borderRadius: BorderRadius.circular(10)),),
