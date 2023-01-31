@@ -25,3 +25,13 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
+const systemError = SnackBar(
+  backgroundColor: Colors.red,
+  content: Text(
+    "Une erreur inattendue est survenue. Veillez réessayer.",
+    style: TextStyle(
+        color: Colors.white, fontSize: 14.0, fontWeight: FontWeight.w400),
+    textAlign: TextAlign.left,
+    textScaleFactor: 1.1,
+  ),
+);
