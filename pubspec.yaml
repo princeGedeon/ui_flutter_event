@@ -33,6 +33,8 @@ dependencies:
     sdk: flutter
 
   flutter_flushbar: ^0.0.2
+  dio: ^4.0.6
+  shared_preferences: ^2.0.17
 
 
   datepicker_dropdown: ^0.0.7+3
