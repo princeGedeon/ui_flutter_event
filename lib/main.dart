@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
-
+import 'package:ui_event_app/screens/event_list.dart';
 
 import 'package:ui_event_app/screens/signin_page.dart';
-
 
 void main() => runApp(const MyApp());
 
@@ -12,18 +10,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     const appTitle = 'Form Validation Demo';
 
     return const MaterialApp(
       title: appTitle,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-
-        body: SignInPage()
-      ),
+      home: Scaffold(body: EventList()),
     );
-
   }
 }
-
