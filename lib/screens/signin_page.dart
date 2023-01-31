@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/screens/forgotten_password.dart';
 import 'package:ui_event_app/screens/forgotten_password_part_two.dart';
+import 'package:ui_event_app/screens/homepage.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/screens/signup_page.dart';
 import 'package:ui_event_app/utils/app_func.dart';
@@ -119,7 +120,7 @@ class _SignInPageState extends State<SignInPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          navigateToNextPage(context, OptionsPage(),back: false);
+                          navigateToNextPage(context, HomePage(),back: false);
                         }),
                   ),
                 ),
