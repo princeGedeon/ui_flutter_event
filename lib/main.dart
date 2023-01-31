@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: appTitle,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: EventList()),
+      home: Scaffold(body: SignInPage()),
     );
   }
 }

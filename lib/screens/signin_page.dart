@@ -1,16 +1,18 @@
-import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/global.dart';
+import 'package:ui_event_app/screens/event_list.dart';
 import 'package:ui_event_app/screens/forgotten_password.dart';
 import 'package:ui_event_app/screens/forgotten_password_part_two.dart';
 import 'package:ui_event_app/screens/homepage.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/screens/signup_page.dart';
 import 'package:ui_event_app/utils/app_func.dart';
+
+import '../services/apiServices.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -22,6 +24,24 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   bool _obscuretext = false;
   bool _checkValue = true;
+  late TextEditingController emailCOntroller;
+  late TextEditingController passController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailCOntroller=TextEditingController();
+    passController=TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailCOntroller.dispose();
+    passController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -61,7 +81,9 @@ class _SignInPageState extends State<SignInPage> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: emailCOntroller,
                   decoration: InputDecoration(
+
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       prefixIcon: Icon(Icons.mail_outlined)),
@@ -74,6 +96,7 @@ class _SignInPageState extends State<SignInPage> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: passController,
                   obscureText: _obscuretext,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -119,8 +142,19 @@ class _SignInPageState extends State<SignInPage> {
                           "              Connexion            ",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          navigateToNextPage(context, HomePage(),back: false);
+                        onPressed: () async {
+                          
+                          
+                          
+                        if(await ApiServices.connect(emailCOntroller.text,passController.text)){
+                          navigateToNextPage(context, EventList());
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar)
+                        }
+                        
+                        
+                        
+                         // navigateToNextPage(context, HomePage(),back: false);
                         }),
                   ),
                 ),
