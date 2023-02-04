@@ -11,6 +11,7 @@ import 'package:ui_event_app/screens/homepage.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/screens/signup_page.dart';
 import 'package:ui_event_app/utils/app_func.dart';
+import 'package:ui_event_app/components/global.dart';
 
 import '../services/apiServices.dart';
 
