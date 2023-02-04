@@ -1,9 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/global.dart';
+import 'package:ui_event_app/screens/signin_page.dart';
+import 'package:ui_event_app/services/apiServices.dart';
+import 'package:ui_event_app/utils/app_func.dart';
 
 class ForgottenPasswordPartTwo extends StatefulWidget {
-  const ForgottenPasswordPartTwo({super.key});
+  ForgottenPasswordPartTwo({super.key,required this.pass1,required this.pass2});
+  final String pass1;
+  final String pass2;
+
+
+
 
   @override
   State<ForgottenPasswordPartTwo> createState() =>
@@ -13,6 +21,21 @@ class ForgottenPasswordPartTwo extends StatefulWidget {
 class _ForgottenPasswordPartTwoState extends State<ForgottenPasswordPartTwo> {
   bool _obscuretext = true;
   bool _checkValue = true;
+  late TextEditingController codeController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    codeController=TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    codeController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -62,7 +85,8 @@ class _ForgottenPasswordPartTwoState extends State<ForgottenPasswordPartTwo> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
-                  keyboardType: TextInputType.number,
+                  controller: codeController,
+                  keyboardType: TextInputType.text,decoration: InputDecoration(hintText: "Code de validation"),
                 ),
                 SizedBox(
                   height: screenHeight / 30,
@@ -72,7 +96,7 @@ class _ForgottenPasswordPartTwoState extends State<ForgottenPasswordPartTwo> {
                 ),
                 Center(
                   child: Text(
-                    "Entrez le code à 5 chiffres",
+                    "Entrez le code secret",
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -85,31 +109,43 @@ class _ForgottenPasswordPartTwoState extends State<ForgottenPasswordPartTwo> {
                           "   Validez le code      ",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          showDialog(
-                              barrierColor: Color.fromRGBO(0, 0, 0, 0),
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                    backgroundColor: myBlue,
-                                    title: const Text(
-                                      "Mot de passe changé",
-                                      style: TextStyle(color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    content: CupertinoButton(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 0),
-                                        color: Color.fromRGBO(37, 211, 102, 1),
-                                        child: Text(
-                                          "Retour page connexion",
-                                          style: TextStyle(color: Colors.white),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        onPressed: () {}),
-                                  ));
+                        onPressed: () async {
+                          List<String> splitted = codeController.text.split("/");
+                          print(splitted[0]);
+                          print(splitted[1]);
+
+                          if (await ApiServices.changepassword(widget.pass1, widget.pass2, splitted[1], splitted[0])){
+                            showDialog(
+                                barrierColor: Color.fromRGBO(0, 0, 0, 0),
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  backgroundColor: myBlue,
+                                  title: const Text(
+                                    "Mot de passe changé",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  content: CupertinoButton(
+                                      padding:
+                                      EdgeInsets.symmetric(horizontal: 0),
+                                      color: Color.fromRGBO(37, 211, 102, 1),
+                                      child: Text(
+                                        "Retour page connexion",
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      onPressed: () {
+                                        navigateToNextPage(context, SignInPage());
+                                      }),
+                                ));
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(systemError);
+                            codeController.text="";
+                          }
+
                         }),
                   ),
                 ),

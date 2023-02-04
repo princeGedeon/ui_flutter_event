@@ -144,13 +144,13 @@ class _SignInPageState extends State<SignInPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
-                          
+
                           
                           
                         if(await ApiServices.connect(emailCOntroller.text,passController.text)){
                           navigateToNextPage(context, EventList());
                         }else{
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar)
+                          ScaffoldMessenger.of(context).showSnackBar(systemError);
                         }
                         
                         

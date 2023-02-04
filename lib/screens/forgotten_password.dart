@@ -4,6 +4,8 @@ import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/screens/forgotten_password_part_two.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 
+import '../services/apiServices.dart';
+
 class ForgottenPassword extends StatefulWidget {
   const ForgottenPassword({super.key});
 
@@ -12,6 +14,28 @@ class ForgottenPassword extends StatefulWidget {
 }
 
 class _ForgottenPasswordState extends State<ForgottenPassword> {
+  late TextEditingController emailCOntroller;
+  late TextEditingController passController;
+  late TextEditingController pass2Controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  emailCOntroller=TextEditingController();
+  passController=TextEditingController();
+  pass2Controller=TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailCOntroller.dispose();
+    pass2Controller.dispose();
+    passController.dispose();
+    super.dispose();
+  }
   bool _obscuretext = true;
   bool _checkValue = true;
   @override
@@ -57,7 +81,9 @@ class _ForgottenPasswordState extends State<ForgottenPassword> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: emailCOntroller,
                   decoration: InputDecoration(
+
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       prefixIcon: Icon(Icons.mail_outlined)),
@@ -70,6 +96,7 @@ class _ForgottenPasswordState extends State<ForgottenPassword> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: passController,
                   obscureText: _obscuretext,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -91,6 +118,7 @@ class _ForgottenPasswordState extends State<ForgottenPassword> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller:pass2Controller,
                   obscureText: _obscuretext,
                   decoration: InputDecoration(
                       prefixIconColor: myBlue,
@@ -114,8 +142,14 @@ class _ForgottenPasswordState extends State<ForgottenPassword> {
                           "   Réinitialiser mot de passe      ",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          navigateToNextPage(context, ForgottenPasswordPartTwo());
+                        onPressed: () async {
+
+                              if (await ApiServices.sendpassmail(emailCOntroller.text)){
+                                navigateToNextPage(context, ForgottenPasswordPartTwo(pass1: passController.text, pass2: pass2Controller.text,));
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(systemError);
+                              }
+
                         }),
                   ),
                 ),
