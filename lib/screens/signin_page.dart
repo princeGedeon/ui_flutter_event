@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -32,8 +31,8 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    emailCOntroller=TextEditingController();
-    passController=TextEditingController();
+    emailCOntroller = TextEditingController();
+    passController = TextEditingController();
   }
 
   @override
@@ -43,6 +42,7 @@ class _SignInPageState extends State<SignInPage> {
     passController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -84,7 +84,6 @@ class _SignInPageState extends State<SignInPage> {
                 TextFormField(
                   controller: emailCOntroller,
                   decoration: InputDecoration(
-
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       prefixIcon: Icon(Icons.mail_outlined)),
@@ -126,7 +125,6 @@ class _SignInPageState extends State<SignInPage> {
                     TextButton(
                         onPressed: () {
                           navigateToNextPage(context, ForgottenPassword());
-
                         },
                         child: Text(
                           "Mot de passe oublié?",
@@ -144,25 +142,22 @@ class _SignInPageState extends State<SignInPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
+                          if (await ApiServices.connect(
+                              emailCOntroller.text, passController.text)) {
+                            navigateToNextPage(context, EventList());
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(systemError);
+                          }
 
-                          
-                          
-                        if(await ApiServices.connect(emailCOntroller.text,passController.text)){
-                          navigateToNextPage(context, EventList());
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(systemError);
-                        }
-                        
-                        
-                        
-                         // navigateToNextPage(context, HomePage(),back: false);
+                          // navigateToNextPage(context, HomePage(),back: false);
                         }),
                   ),
                 ),
                 Center(
                   child: TextButton(
                       onPressed: () {
-                        navigateToNextPage(context, SignUpPage());
+                        navigateToNextPage(context, SignUpPage(), back: false);
                       },
                       child: RichText(
                           text: TextSpan(children: [

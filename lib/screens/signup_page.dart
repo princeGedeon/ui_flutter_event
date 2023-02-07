@@ -1,11 +1,11 @@
-
-
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/global.dart';
+import 'package:ui_event_app/screens/signin_page.dart';
+import 'package:ui_event_app/services/apiServices.dart';
+
+import '../utils/app_func.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -17,17 +17,35 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool _obscuretext = false;
   bool _checkValue = true;
-  // Initial Selected Value
-  String dropdownvalue = 'Item 1';
 
-  // List of items in our dropdown menu
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  late TextEditingController emailController;
+  late TextEditingController passController;
+  late TextEditingController nameController;
+  late TextEditingController surnameController;
+  late TextEditingController passController2;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailController = TextEditingController();
+    passController = TextEditingController();
+    nameController = TextEditingController();
+    surnameController = TextEditingController();
+    passController2 = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.dispose();
+    passController.dispose();
+    nameController.dispose();
+    surnameController.dispose();
+    passController2.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -36,12 +54,12 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         backgroundColor: myBlue,
         toolbarHeight: 125,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(60),
                 bottomRight: Radius.circular(60))),
         elevation: 0,
-        title: Center(
+        title: const Center(
           child: Text(
             "S'inscrire",
             style: TextStyle(fontSize: 30),
@@ -59,15 +77,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: screenHeight / 20,
                 ),
-                Text(
-                  "Nom du compte",
+                const Text(
+                  "Nom",
                   textAlign: TextAlign.start,
                 ),
                 SizedBox(
                   height: screenHeight / 50,
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  controller: nameController,
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       prefixIcon: Icon(Icons.person_outlined)),
@@ -75,45 +94,24 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: screenHeight / 20,
                 ),
-                Text(
-                  "Date de naissance",
+                const Text(
+                  "Prénom",
                   textAlign: TextAlign.start,
                 ),
                 SizedBox(
                   height: screenHeight / 50,
                 ),
-                DropdownDatePicker(
-                  inputDecoration: InputDecoration(
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      ),
+                TextFormField(
+                  controller: surnameController,
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))), // optional
-                  isDropdownHideUnderline: true, // optional
-                  isFormValidator: true, // optional
-                  startYear: 1900, // optional
-                  endYear: 2020, // optional
-                  width: 0.3, // optional
-                  // selectedDay: 14, // optional
-                  selectedMonth: 10, // optional
-                  selectedYear: 1993, // optional
-                  onChangedDay: (value) => print('onChangedDay: $value'),
-                  onChangedMonth: (value) => print('onChangedMonth: $value'),
-                  onChangedYear: (value) => print('onChangedYear: $value'),
-                  //boxDecoration: BoxDecoration(
-                  // border: Border.all(color: Colors.grey, width: 1.0)), // optional
-                  // showDay: false,// optional
-                  // dayFlex: 2,// optional
-                  // locale: "zh_CN",// optional
-                  // hintDay: 'Day', // optional
-                  // hintMonth: 'Month', // optional
-                  // hintYear: 'Year', // optional
-                  // hintTextStyle: TextStyle(color: Colors.grey), // optional
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      prefixIcon: Icon(Icons.person_outlined)),
                 ),
                 SizedBox(
                   height: screenHeight / 20,
                 ),
-                Text(
+                const Text(
                   "Adresse mail",
                   textAlign: TextAlign.start,
                 ),
@@ -121,7 +119,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: screenHeight / 50,
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  controller: emailController,
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       prefixIcon: Icon(Icons.mail_outlined)),
@@ -129,14 +128,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: screenHeight / 30,
                 ),
-                Text("Mot de passe"),
+                const Text("Mot de passe"),
                 SizedBox(
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: passController,
                   obscureText: _obscuretext,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       suffixIcon: IconButton(
                           onPressed: () {
@@ -150,11 +150,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: screenHeight / 30,
                 ),
-                Text("Confirmez le mot de passe"),
+                const Text("Confirmez le mot de passe"),
                 SizedBox(
                   height: screenHeight / 50,
                 ),
                 TextFormField(
+                  controller: passController2,
                   obscureText: _obscuretext,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -177,34 +178,68 @@ class _SignUpPageState extends State<SignUpPage> {
                           "              Inscription            ",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          showDialog(
-                              barrierColor: Color.fromRGBO(0, 0, 0, 0),
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                    backgroundColor: myBlue,
-                                    title: const Text(
-                                      "Inscription réussie",
-                                      style: TextStyle(color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    content: CupertinoButton(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 0),
-                                        color: Color.fromRGBO(37, 211, 102, 1),
-                                        child: Text(
-                                          "Retour page connexion",
-                                          style: TextStyle(color: Colors.white),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        onPressed: () {}),
-                                  ));
+                        onPressed: () async {
+                          print("hello");
+                          if (await ApiServices.register(
+                              emailController.text,
+                              passController.text,
+                              passController2.text,
+                              nameController.text,
+                              surnameController.text)) {
+                            showDialog(
+                                barrierColor: Color.fromRGBO(0, 0, 0, 0),
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      backgroundColor: myBlue,
+                                      title: const Text(
+                                        "Inscription réussie",
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: CupertinoButton(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0),
+                                          color:
+                                              Color.fromRGBO(37, 211, 102, 1),
+                                          child: Text(
+                                            "Retour page connexion",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            navigateToNextPage(
+                                                context, SignInPage(),
+                                                back: false);
+                                          }),
+                                    ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(systemError);
+                          }
                         }),
                   ),
                 ),
+                Center(
+                  child: TextButton(
+                      onPressed: () {
+                        navigateToNextPage(context, SignInPage(), back: false);
+                      },
+                      child: RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                            text: "Vous avez déjà un compte? ",
+                            style: TextStyle(color: Colors.black)),
+                        TextSpan(
+                            text: "Connectez-vous",
+                            style: TextStyle(
+                                color: myBlue, fontWeight: FontWeight.bold))
+                      ]))),
+                )
               ],
             ),
           ),

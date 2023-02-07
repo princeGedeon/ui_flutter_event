@@ -31,6 +31,25 @@ class ApiServices {
       return false;
     }
   }
+    static Future<bool> register(String email, String password, String password2, String nom, String prenom) async {
+    var dio = Dio();
+    try {
+      final response = await dio.post(APiConstants.BASEURL + "api/user/register/",
+          data: {'email': email, "nom": nom, "password": password, "password2": password2, "prenom": prenom});
+
+      Map<String, dynamic> data = response.data;
+
+      if (response.statusCode != 400) {
+        
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 
   static Future<bool> changepassword(String password,String password2,String token,String uid) async {
     var dio=Dio();
