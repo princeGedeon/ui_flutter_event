@@ -2,8 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flushbar/flutter_flushbar.dart';
+import 'package:intl/intl.dart';
 
+DateTime convertDate(dateString){
+  var dateTime = DateTime.parse(dateString);
+  return dateTime;
+}
 
+String formarDate(dateTime){
+  var format = DateFormat("EEEE dd MMMM yyyy");
+  var formattedDate = format.format(dateTime);
+  return formattedDate;
+}
 log(dynamic text){
   if (kDebugMode) {
     print(text);

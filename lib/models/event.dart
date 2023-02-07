@@ -3,31 +3,31 @@
 class EventModel{
   int id;
   String title;
-  String description;
-  DateTime date;
-  String previewUrl;
-  String type;
-  String code_adhesion;
-  String price;
-  DateTime start_date;
-  DateTime end_date;
-  DateTime end_date_inscription;
-  String status;
-  String location;
-  String number_phone;
-  double latitude;
-  double longitude;
+  String? description;
+  String? date;
+  String preview;
+  String? type;
+  String? code_adhesion;
+  String? price;
+  String start_date;
+  String? end_date;
+  String? end_date_inscription;
+  String? status;
+  String? location;
+  String? number_phone;
+  double? latitude;
+  double? longitude;
   bool is_active;
-  String category;
+  int category;
   int owner;
-  List<int> guests;
+  List<dynamic> guests;
 
   EventModel({
     required this.id,
       required this.title,
       required this.description,
     required this.date,
-    required this.previewUrl,
+    required this.preview,
     required this.type,
     required this.code_adhesion,
     required this.price,
@@ -49,14 +49,14 @@ class EventModel{
       "id":this.id,
       "title": this.title,
       "description": this.description,
-      "date": this.date.toIso8601String(),
-      "previewUrl": this.previewUrl,
+      "date": this.date,
+      "previewUrl": this.preview,
       "type": this.type,
       "code_adhesion": this.code_adhesion,
       "price": this.price,
-      "start_date": this.start_date.toIso8601String(),
-      "end_date": this.end_date.toIso8601String(),
-      "end_date_inscription": this.end_date_inscription.toIso8601String(),
+      "start_date": this.start_date,
+      "end_date": this.end_date,
+      "end_date_inscription": this.end_date_inscription,
       "status": this.status,
       "location": this.location,
       "number_phone": this.number_phone,
@@ -74,23 +74,23 @@ class EventModel{
       id:json['id'],
       title: json["title"],
       description: json["description"],
-      date: DateTime.parse(json["date"]),
-      previewUrl: json["previewUrl"],
+      date: json["date"],
+      preview: json["preview"],
       type: json["type"],
       code_adhesion: json["code_adhesion"],
       price: json["price"],
-      start_date: DateTime.parse(json["start_date"]),
-      end_date: DateTime.parse(json["end_date"]),
-      end_date_inscription: DateTime.parse(json["end_date_inscription"]),
+      start_date: json["start_date"],
+      end_date: json["end_date"],
+      end_date_inscription: json["end_date_inscription"],
       status: json["status"],
       location: json["location"],
       number_phone: json["number_phone"],
-      latitude: double.parse(json["latitude"]),
-      longitude: double.parse(json["longitude"]),
-      is_active: json["is_active"].toLowerCase() == 'true',
+      latitude: json["latitude"],
+      longitude: json["longitude"],
+      is_active: json["is_active"],
       category: json["category"],
-      owner: int.parse(json["owner"]),
-      guests: List.of(json["guests"]).map((i) => int.parse(i)).toList(),
+      owner: json["owner"],
+      guests: json["guests"],
     );
   }
 //

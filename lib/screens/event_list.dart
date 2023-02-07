@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -6,6 +7,7 @@ import 'package:ui_event_app/components/wrapperevent.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 
 import '../models/event.dart';
+import '../utils/app_func.dart';
 
 class EventList extends StatefulWidget {
   const EventList({super.key});
@@ -74,7 +76,9 @@ class _EventListState extends State<EventList> {
                     "Voir tout",
                     style: TextStyle(color: Colors.black),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                 ),
               ],
             ),
@@ -86,9 +90,13 @@ class _EventListState extends State<EventList> {
                 padding: EdgeInsets.all(10),
                 child: Container(
                   height: 500,
-                  child: ListView.builder(itemBuilder: (BuildContext context,index){
-                    return eventTile();
-                  },itemCount: events.length,),
+                  child: RefreshIndicator(
+                    onRefresh: refresh,
+                    child: ListView.builder(itemBuilder: (BuildContext context,index){
+
+                      return eventTile(events[index]);
+                    },itemCount: events.length,),
+                  ),
                 )
 
 
@@ -102,32 +110,31 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  Widget eventTile() {
+  Widget eventTile(EventModel event) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.orangeAccent,
       child: ListTile(
-        leading: Icon(Icons.event),
-        isThreeLine: true,
-        title: Text(
-          "Excursion sur Dassa",
-          style: TextStyle(color: Colors.white),
-        ),
-        subtitle: Text(
-          "12 janvier 2023\n Cotonou",
-          style: TextStyle(color: Colors.white),
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              "Groupe ABE",
-              style: TextStyle(color: Colors.white),
-            )
-          ],
-        ),
-      ),
-    );
+          leading: Image.network(event.preview),
+          isThreeLine: true,
+          title: Text(
+            event.title,
+            style: TextStyle(color: Colors.white),
+          ),
+          subtitle: Text(
+            formarDate(convertDate(event.start_date)),
+            style: TextStyle(color: Colors.white),
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                "Groupe ABE",
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),);
   }
 
   Future<void> getAllEvent() async {
@@ -138,5 +145,10 @@ class _EventListState extends State<EventList> {
     print(events);
   }
 
-
+Future<void> refresh() {
+    getAllEvent();
+    return Future.delayed(Duration(seconds: 0));
 }
+}
+
+
