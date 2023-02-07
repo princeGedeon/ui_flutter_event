@@ -120,4 +120,54 @@ class ApiServices {
       return events;
     }
   }
+
+  static Future<String> getToken() async {
+    if (await HelperPreferences.checkKey("accessToken") &&
+        await HelperPreferences.checkKey("refreshToken")) {
+      var dio = Dio();
+      try {
+        String token =
+            await HelperPreferences.retrieveStringValue("accessToken");
+        final response = await dio.post(
+            APiConstants.BASEURL + "api/user/api/token/verify/",
+            data: {"token": token});
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return token;
+        } else {
+          String refresh =
+              await HelperPreferences.retrieveStringValue("refreshToken");
+          final response = await dio.post(
+              APiConstants.BASEURL + "api/user/api/token/refresh/",
+              data: {"refresh": refresh});
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            String newToken = response.data["access"];
+            await HelperPreferences.saveStringValue("accessToken", newToken);
+            return newToken;
+          } else {
+            return "";
+          }
+        }
+      } catch (e) {
+        print(e.toString());
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
+
+  static Future<void> getUser() async {
+    var dio = Dio();
+    String token = await getToken();
+    final response = await dio.get(APiConstants.BASEURL + "api/user/profile/",
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        }));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.data.toString());
+    } else {}
+  }
 }

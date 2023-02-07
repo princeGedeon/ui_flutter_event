@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
+import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 
 import 'global.dart';
@@ -60,7 +61,8 @@ class WrapperEvent extends StatelessWidget {
                           size: 30,
                           color: Colors.white,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          ApiServices.getUser();
                           navigateToNextPage(context, OptionsPage());
                         }),
                   ],
