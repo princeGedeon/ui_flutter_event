@@ -49,6 +49,7 @@ class _SignInPageState extends State<SignInPage> {
     double screenWidth = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: myBlue,
         toolbarHeight: 125,

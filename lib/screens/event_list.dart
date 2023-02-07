@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
 
 class EventList extends StatefulWidget {
@@ -15,74 +16,77 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return WrapperEvent(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              "Vos événements",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Card(
-              elevation: 20,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: Container(
-                padding:
-                    EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Vous ne participez à aucun événement",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Text("Inscrivez vous à des événements")
-                  ],
-                ),
+      child: ScrollConfiguration(
+        behavior: MyBehavior(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "Vos événements",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Événements publiques",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                TextButton(
-                  child: Text(
-                    "Voir tout",
-                    style: TextStyle(color: Colors.black),
+              SizedBox(
+                height: 20,
+              ),
+              Card(
+                elevation: 20,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                child: Container(
+                  padding:
+                      EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Vous ne participez à aucun événement",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Text("Inscrivez vous à des événements")
+                    ],
                   ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                  ],
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Événements publiques",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  TextButton(
+                    child: Text(
+                      "Voir tout",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      eventTile(),
+                      eventTile(),
+                      eventTile(),
+                      eventTile(),
+                      eventTile(),
+                      eventTile(),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

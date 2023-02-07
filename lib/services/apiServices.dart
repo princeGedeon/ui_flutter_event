@@ -21,7 +21,7 @@ class ApiServices {
             "accessToken", data["token"]["access"].toString());
         HelperPreferences.saveStringValue(
             "refreshToken", data["token"]["refresh"].toString());
-
+        HelperPreferences.saveBoolValue("connected", true);
         return true;
       } else {
         return false;
@@ -31,16 +31,23 @@ class ApiServices {
       return false;
     }
   }
-    static Future<bool> register(String email, String password, String password2, String nom, String prenom) async {
+
+  static Future<bool> register(String email, String password, String password2,
+      String nom, String prenom) async {
     var dio = Dio();
     try {
-      final response = await dio.post(APiConstants.BASEURL + "api/user/register/",
-          data: {'email': email, "nom": nom, "password": password, "password2": password2, "prenom": prenom});
+      final response =
+          await dio.post(APiConstants.BASEURL + "api/user/register/", data: {
+        'email': email,
+        "nom": nom,
+        "password": password,
+        "password2": password2,
+        "prenom": prenom
+      });
 
       Map<String, dynamic> data = response.data;
 
       if (response.statusCode != 400) {
-        
         return true;
       } else {
         return false;
@@ -51,49 +58,39 @@ class ApiServices {
     }
   }
 
-  static Future<bool> changepassword(String password,String password2,String token,String uid) async {
-    var dio=Dio();
-    try{
-      final response=await dio.post(APiConstants.BASEURL+"api/user/reset-password/${uid}/${token}/",
-
-         data: {
-        "password":password,
-        "password2":password2
-      });
+  static Future<bool> changepassword(
+      String password, String password2, String token, String uid) async {
+    var dio = Dio();
+    try {
+      final response = await dio.post(
+          APiConstants.BASEURL + "api/user/reset-password/${uid}/${token}/",
+          data: {"password": password, "password2": password2});
       print(response.statusCode);
-      if (response.statusCode!=400){
+      if (response.statusCode != 400) {
         return true;
-      }
-      else{
+      } else {
         return false;
       }
-    }
-    catch (e){
+    } catch (e) {
       print(e.toString());
       return false;
     }
   }
 
-  static Future<bool> sendpassmail(String email) async{
-    var dio=Dio();
-    try{
-
-      final response=await dio.post(APiConstants.BASEURL+"api/user/send-reset-password-mail/",data: {
-        'email':email
-      });
+  static Future<bool> sendpassmail(String email) async {
+    var dio = Dio();
+    try {
+      final response = await dio.post(
+          APiConstants.BASEURL + "api/user/send-reset-password-mail/",
+          data: {'email': email});
       print(response.statusCode);
 
       if (response.statusCode != 400) {
-
-
         return true;
       } else {
-
         return false;
       }
-
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       return false;
     }

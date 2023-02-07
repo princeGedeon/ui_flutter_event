@@ -5,9 +5,8 @@ import 'footer.dart';
 import 'global.dart';
 import 'header.dart';
 
-
 class WrapperProfile extends StatefulWidget {
-  WrapperProfile({Key? key,required this.child}) : super(key: key);
+  WrapperProfile({Key? key, required this.child}) : super(key: key);
   Widget child;
 
   @override
@@ -19,9 +18,7 @@ class _WrapperProfileState extends State<WrapperProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(),
-
-      body:  Container(
-
+      body: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: ScrollConfiguration(
@@ -30,34 +27,31 @@ class _WrapperProfileState extends State<WrapperProfile> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Container(
-                      padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
                   child: widget.child,
                 ),
                 const Footer(),
-
               ],
             ),
           ),
           behavior: MyBehavior(),
         ),
       ),
-
-
     );
   }
 }
 
-AppBar customAppBar(){
+AppBar customAppBar() {
   return AppBar(
+    automaticallyImplyLeading: false,
     backgroundColor: myBlue,
-    title:  Row(
+    title: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 100,
-          width:100,
+          width: 100,
           child: CircleAvatar(
             backgroundImage: AssetImage(Images.profil),
           ),
@@ -68,21 +62,27 @@ AppBar customAppBar(){
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Ronald KOMAVO",style:TextStyle(fontWeight: FontWeight.w900,color:Colors.white,fontSize: 23),),
+            Text(
+              "Ronald KOMAVO",
+              style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                  fontSize: 23),
+            ),
             SizedBox(
               height: 10,
             ),
-            Text("Graphic Designer",style: TextStyle(color: Colors.white,fontSize:20),),
+            Text(
+              "Graphic Designer",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ],
-
         )
       ],
     ),
     toolbarHeight: 160,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(65),
-            bottomRight: Radius.circular(65))),
-
+            bottomLeft: Radius.circular(65), bottomRight: Radius.circular(65))),
   );
 }
