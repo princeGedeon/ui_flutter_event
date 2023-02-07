@@ -97,39 +97,27 @@ class ApiServices {
     }
   }
 
-
-
-  static Future<List<EventModel>> getAllEvent() async{
-    List<EventModel> events=[];
-    var dio=Dio();
-    try{
-
-      final response=await dio.get(APiConstants.BASEURL+"api/events/event_list");
+  static Future<List<EventModel>> getAllEvent() async {
+    List<EventModel> events = [];
+    var dio = Dio();
+    try {
+      final response =
+          await dio.get(APiConstants.BASEURL + "api/events/event_list");
       print(response.statusCode);
       print(response.data);
 
       if (response.statusCode != 400) {
-        response.data.results.forEach((element) {
-
+        response.data['results'].forEach((element) {
           events.add(EventModel.fromMap(element));
         });
 
-    
-
-
         return events;
       } else {
-
         return events;
       }
-
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       return events;
     }
-
-
-
   }
 }

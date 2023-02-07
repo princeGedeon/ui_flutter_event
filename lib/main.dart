@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_event_app/screens/event_list.dart';
 
 import 'package:ui_event_app/screens/signin_page.dart';
-import 'package:ui_event_app/utils/helper_preferences.dart';
 
 void main() => runApp(const MyApp());
 

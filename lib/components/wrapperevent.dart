@@ -61,7 +61,7 @@ class WrapperEvent extends StatelessWidget {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          navigateToNextPage(context, OptionsPage(), back: false);
+                          navigateToNextPage(context, OptionsPage());
                         }),
                   ],
                 ),

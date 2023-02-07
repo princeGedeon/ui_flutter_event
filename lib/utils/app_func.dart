@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flushbar/flutter_flushbar.dart';
 import 'package:intl/intl.dart';
 
-DateTime convertDate(dateString){
+DateTime convertDate(dateString) {
   var dateTime = DateTime.parse(dateString);
   return dateTime;
 }
 
-String formarDate(dateTime){
+String formarDate(dateTime) {
   var format = DateFormat("EEEE dd MMMM yyyy");
   var formattedDate = format.format(dateTime);
   return formattedDate;
 }
-log(dynamic text){
+
+log(dynamic text) {
   if (kDebugMode) {
     print(text);
   }
@@ -27,10 +28,7 @@ Size getSize(BuildContext context) {
 navigateToNextPage(BuildContext context, Widget widget,
     {bool back = true, bool remove = false}) {
   if (back) {
-    if (remove) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => widget), (_) => false);
-    } else {}
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
   } else {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => widget));
