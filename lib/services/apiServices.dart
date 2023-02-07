@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_event_app/constants/constants_api.dart';
 
+import '../models/event.dart';
 import '../utils/helper_preferences.dart';
 
 class ApiServices {
@@ -78,5 +79,38 @@ class ApiServices {
       print(e.toString());
       return false;
     }
+  }
+
+
+
+  static Future<List<EventModel>> getAllEvent() async{
+    List<EventModel> events=[];
+    var dio=Dio();
+    try{
+
+      final response=await dio.get(APiConstants.BASEURL+"api/events/event_list");
+      print(response.statusCode);
+      print(response.data);
+
+      if (response.statusCode != 400) {
+        response.data.forEach((element) {
+          events.add(EventModel.fromMap(element.data()));
+        });
+
+
+        return events;
+      } else {
+
+        return events;
+      }
+
+    }
+    catch(e){
+      print(e.toString());
+      return events;
+    }
+
+
+
   }
 }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
+import 'package:ui_event_app/services/apiServices.dart';
+
+import '../models/event.dart';
 
 class EventList extends StatefulWidget {
   const EventList({super.key});
@@ -12,6 +15,16 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+  List<EventModel> events=[];
+
+  @override
+  void  initState()  {
+    // TODO: implement initState
+    getAllEvent();
+
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return WrapperEvent(
@@ -66,20 +79,21 @@ class _EventListState extends State<EventList> {
               ],
             ),
             Card(
+
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               child: Container(
                 padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                    eventTile(),
-                  ],
-                ),
+                child: Container(
+                  height: 500,
+                  child: ListView.builder(itemBuilder: (BuildContext context,index){
+                    return eventTile();
+                  },itemCount: events.length,),
+                )
+
+
+
+
               ),
             )
           ],
@@ -115,4 +129,14 @@ class _EventListState extends State<EventList> {
       ),
     );
   }
+
+  Future<void> getAllEvent() async {
+    events=await ApiServices.getAllEvent();
+    setState(() {
+
+    });
+    print(events);
+  }
+
+
 }
