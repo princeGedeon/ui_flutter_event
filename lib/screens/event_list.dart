@@ -4,6 +4,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
+import 'package:ui_event_app/services/apiServices.dart';
+
+import '../models/event.dart';
+import '../utils/app_func.dart';
 
 class EventList extends StatefulWidget {
   const EventList({super.key});
@@ -13,6 +17,16 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+  List<EventModel> events = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getAllEvent();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WrapperEvent(
@@ -72,18 +86,19 @@ class _EventListState extends State<EventList> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      eventTile(),
-                      eventTile(),
-                      eventTile(),
-                      eventTile(),
-                      eventTile(),
-                      eventTile(),
-                    ],
-                  ),
-                ),
+                    padding: EdgeInsets.all(10),
+                    child: Container(
+                      height: 500,
+                      child: RefreshIndicator(
+                        onRefresh: refresh,
+                        child: ListView.builder(
+                          itemBuilder: (BuildContext context, index) {
+                            return eventTile(events[index]);
+                          },
+                          itemCount: events.length,
+                        ),
+                      ),
+                    )),
               )
             ],
           ),
@@ -92,19 +107,19 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  Widget eventTile() {
+  Widget eventTile(EventModel event) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.orangeAccent,
       child: ListTile(
-        leading: Icon(Icons.event),
+        leading: Image.network(event.preview),
         isThreeLine: true,
         title: Text(
-          "Excursion sur Dassa",
+          event.title,
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Text(
-          "12 janvier 2023\n Cotonou",
+          formarDate(convertDate(event.start_date)),
           style: TextStyle(color: Colors.white),
         ),
         trailing: Column(
@@ -118,5 +133,16 @@ class _EventListState extends State<EventList> {
         ),
       ),
     );
+  }
+
+  Future<void> getAllEvent() async {
+    events = await ApiServices.getAllEvent();
+    setState(() {});
+    print(events);
+  }
+
+  Future<void> refresh() {
+    getAllEvent();
+    return Future.delayed(Duration(seconds: 0));
   }
 }
