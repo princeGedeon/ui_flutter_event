@@ -109,7 +109,7 @@ class ApiServices {
       print(response.data);
 
       if (response.statusCode != 400) {
-        response.data.forEach((element) {
+        response.data.results.forEach((element) {
 
           events.add(EventModel.fromMap(element));
         });
