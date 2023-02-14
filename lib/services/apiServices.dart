@@ -9,6 +9,39 @@ import '../models/event.dart';
 import '../utils/helper_preferences.dart';
 
 class ApiServices {
+
+  static Future<List<EventModel>> getAllEvent(int page) async {
+    List<EventModel> events = [];
+    var dio = Dio();
+    try {
+      var response;
+      if (page == 0) {
+        response =
+        await dio.get(APiConstants.BASEURL + "api/events/event_list");
+      } else {
+        response =
+        await dio.get(
+            APiConstants.BASEURL + "api/events/event_list?page=${page}");
+      }
+
+      print(response.statusCode);
+      print(response.data);
+
+      if (response.statusCode != 400) {
+        response.data['results'].forEach((element) {
+          events.add(EventModel.fromMap(element));
+        });
+
+        return events;
+      } else {
+        return events;
+      }
+    } catch (e) {
+      print(e.toString());
+      throw Exception("Erreur: ${e.toString()}");
+    }
+  }
+
   static Future<bool> connect(String email, String password) async {
     var dio = Dio();
     try {
@@ -38,7 +71,7 @@ class ApiServices {
     var dio = Dio();
     try {
       final response =
-          await dio.post(APiConstants.BASEURL + "api/user/register/", data: {
+      await dio.post(APiConstants.BASEURL + "api/user/register/", data: {
         'email': email,
         "nom": nom,
         "password": password,
@@ -47,6 +80,7 @@ class ApiServices {
       });
 
       Map<String, dynamic> data = response.data;
+      print(data);
 
       if (response.statusCode != 400) {
         return true;
@@ -59,8 +93,8 @@ class ApiServices {
     }
   }
 
-  static Future<bool> changepassword(
-      String password, String password2, String token, String uid) async {
+  static Future<bool> changepassword(String password, String password2,
+      String token, String uid) async {
     var dio = Dio();
     try {
       final response = await dio.post(
@@ -97,27 +131,56 @@ class ApiServices {
     }
   }
 
-  static Future<List<EventModel>> getAllEvent() async {
+  static Future<Map<String, dynamic>> getAllEventbyPage(int page) async {
     List<EventModel> events = [];
     var dio = Dio();
     try {
-      final response =
-          await dio.get(APiConstants.BASEURL + "api/events/event_list");
+      var response;
+      if (page == 0) {
+        response =
+        await dio.get(APiConstants.BASEURL + "api/events/event_list");
+      } else {
+        response =
+        await dio.get(
+            APiConstants.BASEURL + "api/events/event_list?page=${page}");
+      }
+
       print(response.statusCode);
       print(response.data);
 
       if (response.statusCode != 400) {
-        response.data['results'].forEach((element) {
-          events.add(EventModel.fromMap(element));
-        });
-
-        return events;
+        return response.data;
       } else {
-        return events;
+        return response.data;
       }
     } catch (e) {
       print(e.toString());
-      return events;
+      return {};
     }
   }
+
+  static Future<EventModel> getEventbyId(int id) async {
+    var dio = Dio();
+    try {
+      var response;
+
+      response =
+      await dio.get(APiConstants.BASEURL + "api/events/detail_event/${id}");
+
+      print(response.statusCode);
+      print(response.data);
+
+      if (response.statusCode != 400) {
+        return EventModel.fromMap(response.data);
+      } else {
+        throw Exception(
+            "Erreur: la requête a retourné un code d'erreur ${response
+                .statusCode}");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
 }
