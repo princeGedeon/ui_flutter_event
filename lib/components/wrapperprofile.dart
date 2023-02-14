@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ui_event_app/constants/constants_api.dart';
+import 'package:ui_event_app/utils/helper_preferences.dart';
 
 import '../constants/constant.dart';
 import 'footer.dart';
@@ -53,7 +55,8 @@ AppBar customAppBar() {
           height: 100,
           width: 100,
           child: CircleAvatar(
-            backgroundImage: AssetImage(Images.profil),
+            backgroundImage:
+                NetworkImage(APiConstants.BASEURL + userData[3], scale: 0.3),
           ),
         ),
         SizedBox(
@@ -63,7 +66,7 @@ AppBar customAppBar() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Ronald KOMAVO",
+              userData[1] + " " + userData[2],
               style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: Colors.white,

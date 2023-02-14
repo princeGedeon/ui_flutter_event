@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_event_app/constants/constant.dart';
 import 'package:ui_event_app/constants/constants_api.dart';
 
 import '../models/event.dart';
@@ -159,6 +160,7 @@ class ApiServices {
     }
   }
 
+
   static Future<EventModel> getEventbyId(int id) async {
     var dio = Dio();
     try {
@@ -182,5 +184,62 @@ class ApiServices {
     }
   }
 
+
+
+  static Future<String> getToken() async {
+    if (await HelperPreferences.checkKey("accessToken") &&
+        await HelperPreferences.checkKey("refreshToken")) {
+      var dio = Dio();
+      try {
+        String token =
+            await HelperPreferences.retrieveStringValue("accessToken");
+        print("initial token ${token}");
+        var response = await dio.post(
+            APiConstants.BASEURL + "api/user/api/token/verify/",
+            data: {"token": token});
+        print("Reponse verif $response");
+        print("test");
+        return token;
+      } catch (e) {
+        print("token expiré");
+        String refresh =
+            await HelperPreferences.retrieveStringValue("refreshToken");
+        print("refresh refresh $refresh");
+        /* final response = await dio.post(
+            APiConstants.BASEURL + "api/user/api/token/refresh/",
+            data: {"refresh": refresh});
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          String newToken = response.data["access"];
+          print("token token $newToken");
+          await HelperPreferences.saveStringValue("accessToken", newToken);
+          return newToken;
+        } else {
+          return "";
+        } */
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
+
+  static Future<void> getUser() async {
+    var dio = Dio();
+    String token = await getToken();
+    final response = await dio.get(APiConstants.BASEURL + "api/user/profile/",
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        }));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.data.toString());
+      var data = response.data;
+      HelperPreferences.saveStringListValue("userData",
+          [data["email"], data["nom"], data["prenom"], data["picture_url"]]);
+      userData = await HelperPreferences.retrieveStringListValue("userData");
+      print(userData);
+    } else {}
+  }
 
 }
