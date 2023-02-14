@@ -2,23 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:infinite_scroll/infinite_scroll_list.dart';
 import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
-import 'package:ui_event_app/screens/event_list_full.dart';
 import 'package:ui_event_app/services/apiServices.dart';
-import 'package:ui_event_app/screens/detailEvent.dart';
+
 import '../models/event.dart';
 import '../utils/app_func.dart';
 
-class EventList extends StatefulWidget {
-  const EventList({super.key});
+class EventListFull extends StatefulWidget {
+  const EventListFull({super.key});
 
   @override
-  State<EventList> createState() => _EventListState();
+  State<EventListFull> createState() => _EventListFullState();
 }
 
-class _EventListState extends State<EventList> {
+class _EventListFullState extends State<EventListFull> {
+
   List<EventModel> events = [];
+  Future<List<EventModel>> getNextPageData(int page) async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (page == 3) return [];
+    final items = ApiServices.getAllEvent(page);
+    return items;
+  }
+
+  List<EventModel> data = [];
+  bool everyThingLoaded = false;
 
   @override
   void initState() {
@@ -26,6 +36,8 @@ class _EventListState extends State<EventList> {
     getAllEvent();
 
     super.initState();
+
+    loadInitialData();
   }
 
   @override
@@ -43,30 +55,7 @@ class _EventListState extends State<EventList> {
               SizedBox(
                 height: 20,
               ),
-              Card(
-                elevation: 20,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: Container(
-                  padding:
-                      EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Vous ne participez à aucun événement",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Text("Inscrivez vous à des événements")
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -79,9 +68,7 @@ class _EventListState extends State<EventList> {
                       "Voir tout",
                       style: TextStyle(color: Colors.black),
                     ),
-                    onPressed: () {
-                      navigateToNextPage(context, EventListFull());
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -90,18 +77,26 @@ class _EventListState extends State<EventList> {
                     borderRadius: BorderRadius.circular(15)),
                 child: Container(
                     padding: EdgeInsets.all(10),
-                    child: events.length!=0?Container(
-                      height: 500,
-                      child: RefreshIndicator(
-                        onRefresh: refresh,
-                        child: ListView.builder(
-                          itemBuilder: (BuildContext context, index) {
-                            return eventTile(events[index]);
-                          },
-                          itemCount: events.length,
-                        ),
-                      ),
-                    ): Container(
+                    child: events.length!=0?
+                    InfiniteScrollList(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      children: data.map((e) => eventTile(e)).toList(),
+                      onLoadingStart: (page) async {
+                        List<EventModel> newData = await getNextPageData(page);
+                        setState(() {
+                          data += newData;
+                          if (newData.isEmpty) {
+                            everyThingLoaded = true;
+                          }
+                        });
+                      },
+                      everythingLoaded: everyThingLoaded,
+                    )
+
+
+
+                        : Container(
                       padding:
                       EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
                       child: Column(
@@ -125,7 +120,7 @@ class _EventListState extends State<EventList> {
   }
 
   Widget eventTile(EventModel event) {
-    return InkWell(child:Card(
+    return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.orangeAccent,
       child: ListTile(
@@ -149,11 +144,7 @@ class _EventListState extends State<EventList> {
           ],
         ),
       ),
-    ),onTap:(){
-
-      navigateToNextPage(context, DetailEvent(id:event.id));
-
-    });
+    );
   }
 
   Future<void> getAllEvent() async {
@@ -166,4 +157,10 @@ class _EventListState extends State<EventList> {
     getAllEvent();
     return Future.delayed(Duration(seconds: 0));
   }
+
+  Future<void> loadInitialData() async {
+    data = await getNextPageData(1);
+    setState(() {});
+  }
+
 }
