@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_event_app/constants/constant.dart';
 import 'package:ui_event_app/constants/constants_api.dart';
 
 import '../models/event.dart';
@@ -128,28 +129,29 @@ class ApiServices {
       try {
         String token =
             await HelperPreferences.retrieveStringValue("accessToken");
-        final response = await dio.post(
+        print("initial token ${token}");
+        var response = await dio.post(
             APiConstants.BASEURL + "api/user/api/token/verify/",
             data: {"token": token});
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          return token;
-        } else {
-          String refresh =
-              await HelperPreferences.retrieveStringValue("refreshToken");
-          final response = await dio.post(
-              APiConstants.BASEURL + "api/user/api/token/refresh/",
-              data: {"refresh": refresh});
-          if (response.statusCode == 200 || response.statusCode == 201) {
-            String newToken = response.data["access"];
-            await HelperPreferences.saveStringValue("accessToken", newToken);
-            return newToken;
-          } else {
-            return "";
-          }
-        }
+        print("Reponse verif $response");
+        print("test");
+        return token;
       } catch (e) {
-        print(e.toString());
+        print("token expiré");
+        String refresh =
+            await HelperPreferences.retrieveStringValue("refreshToken");
+        print("refresh refresh $refresh");
+        /* final response = await dio.post(
+            APiConstants.BASEURL + "api/user/api/token/refresh/",
+            data: {"refresh": refresh});
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          String newToken = response.data["access"];
+          print("token token $newToken");
+          await HelperPreferences.saveStringValue("accessToken", newToken);
+          return newToken;
+        } else {
+          return "";
+        } */
         return "";
       }
     } else {
@@ -168,6 +170,11 @@ class ApiServices {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.data.toString());
+      var data = response.data;
+      HelperPreferences.saveStringListValue("userData",
+          [data["email"], data["nom"], data["prenom"], data["picture_url"]]);
+      userData = await HelperPreferences.retrieveStringListValue("userData");
+      print(userData);
     } else {}
   }
 }
