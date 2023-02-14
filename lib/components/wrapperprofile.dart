@@ -54,9 +54,25 @@ AppBar customAppBar() {
         SizedBox(
           height: 100,
           width: 100,
-          child: CircleAvatar(
-            backgroundImage:
-                NetworkImage(APiConstants.BASEURL2 + userData[3], scale: 0.3),
+          child: Stack(
+            children: [
+              CircleAvatar(
+                minRadius: 30,
+                backgroundImage: NetworkImage(
+                    APiConstants.BASEURL2 + userData[3],
+                    scale: 0.3),
+              ),
+              (userData[4] != "STANDART")
+                  ? (Positioned(
+                      top: 70,
+                      left: 60,
+                      child: Icon(
+                        Icons.workspace_premium,
+                        color: Colors.yellow,
+                        size: 35,
+                      )))
+                  : Container()
+            ],
           ),
         ),
         SizedBox(

@@ -172,7 +172,7 @@ class ApiServices {
       print(response.data.toString());
       var data = response.data;
       HelperPreferences.saveStringListValue("userData",
-          [data["email"], data["nom"], data["prenom"], data["picture_url"]]);
+          [data["email"], data["nom"], data["prenom"], data["picture_url"], data["profile"]]);
       userData = await HelperPreferences.retrieveStringListValue("userData");
       print(userData);
     } else {}
