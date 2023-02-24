@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
 import 'package:ui_event_app/screens/paiementPage.dart';
+import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';
 
@@ -36,6 +37,7 @@ class _SusbcriptionState extends State<Susbcription> {
                     sandbox: true,
                     apikey: 'd02e092072ad11edafdd9bfe995c3ca5',
                     callback: (response, context) {
+                      ApiServices.passtopremium();
                       Navigator.pop(context);
                     },
                     theme: "#222F5A",
@@ -43,6 +45,7 @@ class _SusbcriptionState extends State<Susbcription> {
                     paymentMethods: ["momo", "card"]);
 
                 navigateToNextPage(context, kkiapay);
+                setState(() {});
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
@@ -91,7 +94,29 @@ class _SusbcriptionState extends State<Susbcription> {
             height: 50,
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // navigateToNextPage(context, PaiementPage());
+                final kkiapay = KKiaPay(
+                    amount: 10000,
+                    countries: ["BJ"],
+                    phone: "22961000000",
+                    name: "GUEDJE Prince Gédéon",
+                    email: "email@mail.com",
+                    reason: 'Evenement',
+                    data: 'Fake data',
+                    sandbox: true,
+                    apikey: 'd02e092072ad11edafdd9bfe995c3ca5',
+                    callback: (response, context) {
+                      ApiServices.passtopremium();
+                      Navigator.pop(context);
+                    },
+                    theme: "#222F5A",
+                    partnerId: 'AxXxXXxId',
+                    paymentMethods: ["momo", "card"]);
+
+                navigateToNextPage(context, kkiapay);
+                setState(() {});
+              },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 shape: RoundedRectangleBorder(

@@ -10,7 +10,6 @@ import '../models/event.dart';
 import '../utils/helper_preferences.dart';
 
 class ApiServices {
-
   static Future<List<EventModel>> getAllEvent(int page) async {
     List<EventModel> events = [];
     var dio = Dio();
@@ -18,11 +17,10 @@ class ApiServices {
       var response;
       if (page == 0) {
         response =
-        await dio.get(APiConstants.BASEURL + "api/events/event_list");
+            await dio.get(APiConstants.BASEURL + "api/events/event_list");
       } else {
-        response =
-        await dio.get(
-            APiConstants.BASEURL + "api/events/event_list?page=${page}");
+        response = await dio
+            .get(APiConstants.BASEURL + "api/events/event_list?page=${page}");
       }
 
       print(response.statusCode);
@@ -72,7 +70,7 @@ class ApiServices {
     var dio = Dio();
     try {
       final response =
-      await dio.post(APiConstants.BASEURL + "api/user/register/", data: {
+          await dio.post(APiConstants.BASEURL + "api/user/register/", data: {
         'email': email,
         "nom": nom,
         "password": password,
@@ -94,8 +92,8 @@ class ApiServices {
     }
   }
 
-  static Future<bool> changepassword(String password, String password2,
-      String token, String uid) async {
+  static Future<bool> changepassword(
+      String password, String password2, String token, String uid) async {
     var dio = Dio();
     try {
       final response = await dio.post(
@@ -139,11 +137,10 @@ class ApiServices {
       var response;
       if (page == 0) {
         response =
-        await dio.get(APiConstants.BASEURL + "api/events/event_list");
+            await dio.get(APiConstants.BASEURL + "api/events/event_list");
       } else {
-        response =
-        await dio.get(
-            APiConstants.BASEURL + "api/events/event_list?page=${page}");
+        response = await dio
+            .get(APiConstants.BASEURL + "api/events/event_list?page=${page}");
       }
 
       print(response.statusCode);
@@ -160,14 +157,13 @@ class ApiServices {
     }
   }
 
-
   static Future<EventModel> getEventbyId(int id) async {
     var dio = Dio();
     try {
       var response;
 
       response =
-      await dio.get(APiConstants.BASEURL + "api/events/detail_event/${id}");
+          await dio.get(APiConstants.BASEURL + "api/events/detail_event/${id}");
 
       print(response.statusCode);
       print(response.data);
@@ -176,15 +172,12 @@ class ApiServices {
         return EventModel.fromMap(response.data);
       } else {
         throw Exception(
-            "Erreur: la requête a retourné un code d'erreur ${response
-                .statusCode}");
+            "Erreur: la requête a retourné un code d'erreur ${response.statusCode}");
       }
     } catch (e) {
       throw Exception(e.toString());
     }
   }
-
-
 
   static Future<String> getToken() async {
     if (await HelperPreferences.checkKey("accessToken") &&
@@ -235,11 +228,32 @@ class ApiServices {
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.data.toString());
       var data = response.data;
-      HelperPreferences.saveStringListValue("userData",
-          [data["email"], data["nom"], data["prenom"], data["picture_url"], data["profile"]]);
+      HelperPreferences.saveStringListValue("userData", [
+        data["email"],
+        data["nom"],
+        data["prenom"],
+        data["picture_url"],
+        data["profile"]
+      ]);
       userData = await HelperPreferences.retrieveStringListValue("userData");
       print(userData);
     } else {}
   }
 
+  static Future<bool> passtopremium() async {
+    var dio = Dio();
+    String token = await getToken();
+    final response =
+        await dio.post(APiConstants.BASEURL + "api/events/pass_to_premium",
+            options: Options(headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+            }));
+    print(response.data);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
