@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ui_event_app/components/global.dart';
+import 'package:ui_event_app/screens/joinEvent.dart';
 import 'package:ui_event_app/services/apiServices.dart';
+import 'package:ui_event_app/utils/app_func.dart';
 
 import '../models/event.dart';
 
@@ -170,15 +172,20 @@ class _DetailEventState extends State<DetailEvent> {
                             ? Text("Participer")
                             : CircularProgressIndicator(),
                         onPressed: () {
-                          setState(() {
-                            loading = true;
-                          });
-                          ApiServices.joinEvent(event.code_adhesion!, event.id)
-                              .then((value) {
+                          if (event.type == "PUBLIC") {
                             setState(() {
-                              loading = false;
+                              loading = true;
                             });
-                          });
+                            ApiServices.joinEvent(
+                                    event.code_adhesion!, event.id)
+                                .then((value) {
+                              setState(() {
+                                loading = false;
+                              });
+                            });
+                          } else {
+                            navigateToNextPage(context, JoinEvent());
+                          }
                         })
                   ]),
             ),
