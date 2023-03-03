@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_event_app/screens/event_list.dart';
 
 import 'package:ui_event_app/screens/signin_page.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  initializeDateFormatting('fr_FR');
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

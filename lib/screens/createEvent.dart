@@ -31,7 +31,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   String _select_value = "PUBLIC";
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting();
+    initializeDateFormatting('fr_FR');
     priceController.text = "0";
     return WrapperEvent(
       floatingButton: false,
