@@ -74,6 +74,8 @@ class _EventListState extends State<EventList> {
                       ),
                     )
                         : Container(
+                      height: 200,
+                        width: getSize(context).width,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: event3.length,
@@ -118,6 +120,8 @@ class _EventListState extends State<EventList> {
                       ),
                     )
                         : Container(
+                        height: 200,
+                        width: getSize(context).width,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: events2.length,
@@ -273,7 +277,7 @@ class _EventListState extends State<EventList> {
   }
 
   Future<void> getAllEventWhoCreate() async {
-    event3 = await ApiServices.getEventWhoMyGuest();
+    event3 = await ApiServices.getEventWhoCreate();
     setState(() {});
     print(event3);
   }
