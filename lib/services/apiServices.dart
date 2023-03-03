@@ -12,14 +12,19 @@ import '../utils/helper_preferences.dart';
 class ApiServices {
   static Future<List<EventModel>> getEventWhoMyGuest() async {
     List<EventModel> events = [];
-    String token=await getToken();
+    String token = await getToken();
     var dio = Dio();
     try {
-
       var response;
 
-      response =await dio.get(APiConstants.BASEURL + "api/events/event_list_guest",options: Options(headers: {
-        "Content-Type": "application/json", "Authorization": "Bearer $token"},));
+      response =
+          await dio.get(APiConstants.BASEURL + "api/events/event_list_guest",
+              options: Options(
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer $token"
+                },
+              ));
 
       print(response.statusCode);
       print(response.data);
@@ -40,23 +45,25 @@ class ApiServices {
     }
   }
 
-
   static Future<List<EventModel>> getEventWhoCreate() async {
     List<EventModel> events = [];
     var dio = Dio();
-    String token=await getToken();
+    String token = await getToken();
     try {
       var response;
 
-      response =
-      await dio.get(APiConstants.BASEURL + "api/events/myevent/",options: Options(headers: {
-      "Content-Type": "application/json", "Authorization": "Bearer $token"},));
+      response = await dio.get(APiConstants.BASEURL + "api/events/myevent/",
+          options: Options(
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token"
+            },
+          ));
 
       print(response.statusCode);
       print("hhdhfhdfhdhfhdfd");
 
       if (response.statusCode != 400) {
-
         response.data.forEach((element) {
           print("hu");
           events.add(EventModel.fromMap(element));
@@ -71,7 +78,6 @@ class ApiServices {
       throw Exception("Erreur: ${e.toString()}");
     }
   }
-
 
   static Future<List<EventModel>> getAllEvent(int page) async {
     List<EventModel> events = [];
@@ -225,13 +231,15 @@ class ApiServices {
       Map<String, dynamic> data = response.data;
       print(data);
       if (response.statusCode != 400) {
-      toast("Évènement rejoint ! ");
+        toast("Évènement rejoint ! ");
         return true;
       } else {
+        red_toast("Mauvais code");
         return false;
       }
     } catch (e) {
       print(e.toString());
+      red_toast("Mauvais code ou erreur système");
       return false;
     }
   }
