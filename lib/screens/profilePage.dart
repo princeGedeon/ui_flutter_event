@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
 import 'package:ui_event_app/constants/constant.dart';
+import 'package:ui_event_app/screens/event_list.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
@@ -23,6 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    namecontroller.text = userData[1];
+    firstnamecontroller.text = userData[2];
     return WrapperProfile(
         child: Center(
       child: Container(
@@ -68,7 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 };
                 print(mydata);
                 ApiServices.editUser(mydata).then((value) =>
-                    navigateToNextPage(context, OptionsPage(), back: false));
+                    navigateToNextPage(context, EventList(), back: false));
+                toast("Vos informations ont été modifiées");
               } else {
                 red_toast("Veuillez remplir tous les champs");
               }
