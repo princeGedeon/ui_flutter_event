@@ -10,6 +10,35 @@ import '../models/event.dart';
 import '../utils/helper_preferences.dart';
 
 class ApiServices {
+  
+
+   static Future<List<EventModel>> getEventWhoMyGuest() async {
+    List<EventModel> events = [];
+    var dio = Dio();
+    try {
+      var response;
+      
+        response =
+            await dio.get(APiConstants.BASEURL + "api/events/event_list_guest");
+     
+      print(response.statusCode);
+      print(response.data);
+
+      if (response.statusCode != 400) {
+        response.data['results'].forEach((element) {
+          events.add(EventModel.fromMap(element));
+        });
+
+        return events;
+      } else {
+        return events;
+      }
+    } catch (e) {
+      print(e.toString());
+      throw Exception("Erreur: ${e.toString()}");
+    }
+  }
+
   static Future<List<EventModel>> getAllEvent(int page) async {
     List<EventModel> events = [];
     var dio = Dio();
