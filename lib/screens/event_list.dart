@@ -50,7 +50,7 @@ class _EventListState extends State<EventList> {
                 child: Column(
                   children: [
 
-                    userData[4] != "STANDART"?Container():Container(child:event3.length == 0
+                    userData[4] == "STANDART"?Container():Container(child:event3.length == 0
                         ? Card(
                       elevation: 20,
                       shape: RoundedRectangleBorder(
