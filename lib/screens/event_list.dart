@@ -74,14 +74,16 @@ class _EventListState extends State<EventList> {
                       ),
                     )
                         : Container(
-                      height: 200,
+                      height: 100,
                         width: getSize(context).width,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: event3.length,
-                          itemBuilder: ((context, index) {
-                            return eventTile(event3[index]);
-                          }),
+                        child: Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: event3.length,
+                            itemBuilder: ((context, index) {
+                              return eventTile(event3[index],Colors.cyan);
+                            }),
+                          ),
                         )),),
                         SizedBox(
                           height: 20,
@@ -120,14 +122,17 @@ class _EventListState extends State<EventList> {
                       ),
                     )
                         : Container(
+
                         height: 200,
                         width: getSize(context).width,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: events2.length,
-                          itemBuilder: ((context, index) {
-                            return eventTile(events2[index]);
-                          }),
+                        child: Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: events2.length,
+                            itemBuilder: ((context, index) {
+                              return Container(child:eventTile(events2[index],Colors.blueAccent));
+                            }),
+                          ),
                         )),
                     SizedBox(
                       height: 20,
@@ -170,7 +175,7 @@ class _EventListState extends State<EventList> {
                                       child: ListView.builder(
                                         itemBuilder:
                                             (BuildContext context, index) {
-                                          return eventTile(events[index]);
+                                          return eventTile(events[index],Colors.orangeAccent);
                                         },
                                         itemCount: events.length,
                                       ),
@@ -231,37 +236,40 @@ class _EventListState extends State<EventList> {
     } else {}
   }
 
-  Widget eventTile(EventModel event) {
-    return InkWell(
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          color: Colors.orangeAccent,
-          child: ListTile(
-            leading: Image.network(event.preview),
-            isThreeLine: true,
-            title: Text(
-              event.title,
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              formarDate(convertDate(event.start_date)),
-              style: TextStyle(color: Colors.white),
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Groupe ABE",
-                  style: TextStyle(color: Colors.white),
-                )
-              ],
+  Widget eventTile(EventModel event,Color color_t) {
+    return Container(
+      width: getSize(context).width*0.8,
+      child: InkWell(
+          child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: color_t,
+            child: ListTile(
+              leading: Image.network(event.preview),
+              isThreeLine: true,
+              title: Text(
+                event.title,
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                formarDate(convertDate(event.start_date)),
+                style: TextStyle(color: Colors.white),
+              ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Groupe ABE",
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        onTap: () {
-          navigateToNextPage(context, DetailEvent(id: event.id));
-        });
+          onTap: () {
+            navigateToNextPage(context, DetailEvent(id: event.id));
+          }),
+    );
   }
 
   Future<void> getAllEvent() async {
