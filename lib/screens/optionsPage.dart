@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
+import 'package:ui_event_app/screens/a_propos.dart';
 import 'package:ui_event_app/screens/profilePage.dart';
 import 'package:ui_event_app/screens/susbcription.dart';
 import 'package:ui_event_app/utils/app_func.dart';
@@ -72,7 +73,7 @@ class _OptionsPageState extends State<OptionsPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              navigateToNextPage(context, widget);
+              navigateToNextPage(context, AboutPage());
             },
             child: Text(
               "A PROPOS",

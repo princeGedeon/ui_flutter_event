@@ -20,6 +20,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WrapperEvent(child: Text("Heelo"));
+    return WrapperEvent(floatingButton: true, child: Text("Heelo"));
   }
 }

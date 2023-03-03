@@ -1,17 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:ui_event_app/constants/constant.dart';
+import 'package:ui_event_app/screens/createEvent.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 
 import 'global.dart';
 
-class WrapperEvent extends StatelessWidget {
-  WrapperEvent({Key? key, required this.child}) : super(key: key);
+class WrapperEvent extends StatefulWidget {
+  bool floatingButton = true;
+  WrapperEvent({Key? key, required this.child, required this.floatingButton})
+      : super(key: key);
   final Widget child;
 
   @override
+  State<WrapperEvent> createState() => _WrapperEventState();
+}
+
+class _WrapperEventState extends State<WrapperEvent> {
+  bool account_loading = false;
+  bool add_loading = false;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: (widget.floatingButton)
+          ? (userData[4] != "STANDART")
+              ? FloatingActionButton(
+                  backgroundColor: myBlue,
+                  onPressed: () {
+                    setState(() {
+                      add_loading = true;
+                    });
+                    ApiServices.getUser();
+                    setState(() {
+                      add_loading = false;
+                    });
+                    navigateToNextPage(context, CreateEventPage());
+                  },
+                  child: (!add_loading)
+                      ? Icon(Icons.add)
+                      : CircularProgressIndicator(),
+                )
+              : Container()
+          : Container(),
       body: SafeArea(
           child: Container(
         width: getSize(context).width,
@@ -56,14 +87,24 @@ class WrapperEvent extends StatelessWidget {
                         ),
                         onPressed: () {}),
                     IconButton(
-                        icon: const Icon(
-                          Icons.person,
-                          size: 30,
-                          color: Colors.white,
-                        ),
+                        icon: (!account_loading)
+                            ? const Icon(
+                                Icons.person,
+                                size: 30,
+                                color: Colors.white,
+                              )
+                            : CircularProgressIndicator(),
                         onPressed: () async {
-                          ApiServices.getUser().then((value) =>
-                              navigateToNextPage(context, OptionsPage()));
+                          setState(() {
+                            account_loading = true;
+                          });
+                          ApiServices.getUser().then((value) {
+                            setState(() {
+                              account_loading = false;
+                              print("fin du loader");
+                            });
+                            navigateToNextPage(context, OptionsPage());
+                          });
                         }),
                   ],
                 ),
@@ -81,7 +122,7 @@ class WrapperEvent extends StatelessWidget {
               width: getSize(context).width,
               child: Padding(
                 padding: EdgeInsets.only(top: 20, right: 10, left: 10),
-                child: child,
+                child: widget.child,
               ),
             ))
           ],

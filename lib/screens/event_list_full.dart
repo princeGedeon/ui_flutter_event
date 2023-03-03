@@ -43,6 +43,7 @@ class _EventListFullState extends State<EventListFull> {
   @override
   Widget build(BuildContext context) {
     return WrapperEvent(
+      floatingButton: true,
       child: ScrollConfiguration(
         behavior: MyBehavior(),
         child: SingleChildScrollView(

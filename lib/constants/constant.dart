@@ -37,3 +37,6 @@ void red_toast(String msg) {
   static const String profil = "assets/images/first.jpeg";
 }
 List<String> userData = [];
+String addSpaceEveryTwoChars(String str) {
+  return str.replaceAllMapped(RegExp(r'.{2}'), (match) => '${match.group(0)} ');
+}

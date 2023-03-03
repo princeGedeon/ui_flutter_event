@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:ui_event_app/constants/constant.dart';
+import 'package:ui_event_app/services/apiServices.dart';
 
 class CreateEventPage extends StatefulWidget {
   const CreateEventPage({super.key});
@@ -9,9 +15,27 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
+  bool loading = false;
+  DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm', 'fr_FR');
+  String date_start = "";
+  String date_end_subscription = "";
+  String date_start_to_show = "Choisissez une date";
+  String date_end_subscription_to_show = "Choisissez une date";
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController placeController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController telController = TextEditingController();
+  TextEditingController code_adhesion = TextEditingController();
+
+  String _select_value = "PUBLIC";
   @override
   Widget build(BuildContext context) {
-    return WrapperEvent(child:  SingleChildScrollView(
+    initializeDateFormatting();
+    priceController.text = "0";
+    return WrapperEvent(
+      floatingButton: false,
+      child: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -21,10 +45,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Row(
                 children: [
-                  IconButton(
-                      onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new)),
                   SizedBox(
-                    width: 50,
+                    width: 70,
                   ),
                   Text(
                     "Créer un évémenment",
@@ -35,10 +57,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
               Divider(
                 height: 20,
               ),
-              Text("veuillez remplir tous les champs"),
+              Text("Veuillez remplir tous les champs"),
               Padding(
                 padding: EdgeInsets.all(20),
                 child: TextFormField(
+                  controller: nameController,
                   decoration: InputDecoration(
                       hintText: "Nom de l'événement",
                       border: OutlineInputBorder(
@@ -48,15 +71,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               Padding(
                 padding: EdgeInsets.all(20),
                 child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: "Nom de l'organisateur",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: TextFormField(
+                  controller: placeController,
                   decoration: InputDecoration(
                       hintText: "Lieu de l'événement",
                       border: OutlineInputBorder(
@@ -66,6 +81,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
               Padding(
                 padding: EdgeInsets.all(20),
                 child: TextFormField(
+                  controller: code_adhesion,
+                  decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 30, horizontal: 8),
+                      hintText: "Code d'adhésion",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: TextFormField(
+                  controller: descriptionController,
                   decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 30, horizontal: 8),
@@ -76,82 +104,140 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Date:",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 0, 248, 8),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Text("jj/mm/aa"),
-                      IconButton(
-                          onPressed: () {}, icon: Icon(Icons.calendar_month))
-                    ]),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Type:",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 0, 248, 8),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Text("Payant"),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.arrow_drop_down_outlined))
-                    ]),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Text:",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 0, 248, 8),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Text("0"),
-                      Text("CFA"),
-                    ]),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.add_a_photo_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Ajouter des images",
-                        style: TextStyle(color: Colors.white, fontSize: 19),
-                      )
-                    ],
-                  ),
+                child: TextFormField(
+                  controller: telController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 30, horizontal: 8),
+                      hintText: "Numéro Infoline",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10))),
                 ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text(
+                      "Date de début :",
+                      style: TextStyle(
+                          color: myBlue,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(date_start_to_show),
+                          IconButton(
+                              onPressed: () {
+                                DatePicker.showDateTimePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime.now(),
+                                    maxTime: DateTime(2030, 6, 7),
+                                    onConfirm: (date) {
+                                  setState(() {
+                                    date_start_to_show =
+                                        dateFormat.format(date);
+                                    date_start = date.toString();
+                                  });
+                                },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.fr);
+                              },
+                              icon: Icon(Icons.calendar_month))
+                        ]),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text(
+                      "Date de fin des inscriptions :",
+                      style: TextStyle(
+                          color: myBlue,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(date_end_subscription_to_show),
+                          IconButton(
+                              onPressed: () {
+                                DatePicker.showDateTimePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime.now(),
+                                    maxTime: DateTime(2030, 6, 7),
+                                    onConfirm: (date) {
+                                  setState(() {
+                                    date_end_subscription_to_show =
+                                        dateFormat.format(date);
+                                    date_end_subscription = date.toString();
+                                  });
+                                },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.fr);
+                              },
+                              icon: Icon(Icons.calendar_month))
+                        ]),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Type :",
+                        style: TextStyle(
+                            color: myBlue,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      DropdownButton(
+                          value: _select_value,
+                          isExpanded: false,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("Public"),
+                              value: "PUBLIC",
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Privé"),
+                              value: "PRIVE",
+                            )
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _select_value = value!;
+                            });
+                          }),
+                    ]),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    "Prix :                      ",
+                    style: TextStyle(
+                        color: myBlue,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: priceController,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  Text("CFA"),
+                ]),
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -160,12 +246,51 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    'CREER',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ))
+                  onPressed: () {
+                    setState(() {
+                      loading = true;
+                    });
+                    if (![
+                      code_adhesion.text,
+                      telController.text,
+                      nameController.text,
+                      priceController.text,
+                      descriptionController.text,
+                      placeController.text,
+                      date_start,
+                      date_end_subscription
+                    ].contains("")) {
+                      var mydata = {
+                        "title": nameController.text,
+                        "description": descriptionController.text,
+                        "type": _select_value,
+                        "code_adhesion": code_adhesion.text,
+                        "price": priceController.text,
+                        "start_date": date_start,
+                        "end_date_inscription": date_end_subscription,
+                        "location": placeController.text,
+                        "number_phone": telController.text,
+                        "owner": userData[5].toString(),
+                        "category": 1
+                      };
+                      print(mydata);
+                      ApiServices.createEvent(mydata).then((value) {
+                        setState(() {
+                          loading = false;
+                        });
+                      });
+                    } else {
+                      red_toast("Remplissez toutes les informations");
+                    }
+                  },
+                  child: (!loading)
+                      ? Text(
+                          'CREER',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        )
+                      : CircularProgressIndicator())
             ]),
-      ),);
+      ),
+    );
   }
 }

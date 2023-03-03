@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
+import 'package:ui_event_app/constants/constant.dart';
+import 'package:ui_event_app/screens/event_list.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';
@@ -37,7 +39,9 @@ class _SusbcriptionState extends State<Susbcription> {
                     apikey: 'd02e092072ad11edafdd9bfe995c3ca5',
                     callback: (response, context) {
                       ApiServices.passtopremium();
-                      Navigator.pop(context);
+                      ApiServices.getUser();
+                      navigateToNextPage(context, EventList(), back: false);
+                      toast("Vous êtes passé premium");
                     },
                     theme: "#222F5A",
                     partnerId: 'AxXxXXxId',

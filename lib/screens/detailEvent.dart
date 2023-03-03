@@ -1,31 +1,57 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 
 import '../models/event.dart';
 
 class DetailEvent extends StatefulWidget {
-   DetailEvent({super.key,required this.id});
-   final int id;
+  DetailEvent({super.key, required this.id});
+  final int id;
 
   @override
   State<DetailEvent> createState() => _DetailEventState();
 }
 
 class _DetailEventState extends State<DetailEvent> {
-
   late EventModel event;
+  DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm', 'fr_FR');
 
   @override
   void initState() {
     // TODO: implement initState
-    event=EventModel(id: widget.id, title: "", description: "", date: "", preview: "", type: "", code_adhesion: "", price: "", start_date: "", end_date: "", end_date_inscription: "", status: "", location: "", number_phone: "", latitude: 0, longitude: 0, is_active: true, category: 0, owner: 0, guests: []);
+    event = EventModel(
+        id: widget.id,
+        title: "",
+        description: "",
+        date: "",
+        preview: "",
+        type: "",
+        code_adhesion: "",
+        price: "",
+        start_date: "",
+        end_date: "",
+        end_date_inscription: "",
+        status: "",
+        location: "",
+        number_phone: "",
+        latitude: 0,
+        longitude: 0,
+        is_active: true,
+        category: 0,
+        owner: 0,
+        guests: []);
     getDetailEvent(widget.id);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,48 +87,43 @@ class _DetailEventState extends State<DetailEvent> {
                         ),
                       ),
                     ),
-                    Row(
+                    Column(
                       children: [
-                        SizedBox(
-                          height: 70,
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 70,
+                            ),
+                            Text(
+                              "Date: ${dateFormat.format(DateTime.parse(event.start_date))}",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 47, 189, 52),
+                                  fontSize: 18),
+                            ),
+                            SizedBox(
+                              width: 98,
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Date: ${event.start_date}",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 47, 189, 52),
-                              fontSize: 18),
-                        ),
-                        SizedBox(
-                          width: 98,
-                        ),
-                        Text(
-                          event.start_date,
-                          style: TextStyle(fontSize: 18),
+                        Row(
+                          children: [
+                            Text(
+                              "Deadline   ",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 47, 189, 52),
+                                  fontSize: 18),
+                            ),
+                            Text(
+                              dateFormat.format(
+                                  DateTime.parse(event.end_date_inscription!)),
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     Row(
-                      children: [
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          "Organisé par:",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 47, 189, 52),
-                              fontSize: 18),
-                        ),
-                        SizedBox(
-                          width: 40,
-                        ),
-                        Text(
-                          "Ministre des sports",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: 80,
@@ -115,32 +136,16 @@ class _DetailEventState extends State<DetailEvent> {
                         ),
                       ],
                     ),
-                    Text(
-                        ".............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................."),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                            onPressed: (() {}),
-                            child: Text(
-                              "voir plus",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 6, 6, 4)),
-                            )),
-                      ],
-                    ),
+                    Text("...................."),
                     Row(
                       children: [
                         SizedBox(
                           height: 20,
                         ),
-                        Text("Participation",
+                        Text("Frais de participation (FCFA)  : ",
                             style: TextStyle(
                                 color: Color.fromARGB(255, 47, 189, 52),
                                 fontSize: 18)),
-                        SizedBox(
-                          width: 100,
-                        ),
                         Text(
                           event.price.toString(),
                           style: TextStyle(
@@ -148,7 +153,19 @@ class _DetailEventState extends State<DetailEvent> {
                         )
                       ],
                     ),
-                    Image(image: AssetImage("assets/jinf.jpg"))
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Image.network(event.preview),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    CupertinoButton(
+                        color: myBlue,
+                        child: Text("Participer"),
+                        onPressed: () {
+                          
+                        })
                   ]),
             ),
           ),
@@ -158,11 +175,8 @@ class _DetailEventState extends State<DetailEvent> {
   }
 
   getDetailEvent(int id) async {
-    event=await ApiServices.getEventbyId(id);
+    event = await ApiServices.getEventbyId(id);
     print(event);
-    setState(() {
-
-    });
+    setState(() {});
   }
-
 }

@@ -31,6 +31,9 @@ class ApiServices {
           events.add(EventModel.fromMap(element));
         });
 
+        print("---------------------------------");
+        print(events);
+
         return events;
       } else {
         return events;
@@ -107,6 +110,58 @@ class ApiServices {
       getUser();
       print(data);
 
+      if (response.statusCode != 400) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  static Future<bool> createEvent(var mydata) async {
+    String token = await getToken();
+    var dio = Dio();
+    try {
+      final response =
+          await dio.post(APiConstants.BASEURL + "api/events/myevent/",
+              data: mydata,
+              options: Options(headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+              }));
+
+      Map<String, dynamic> data = response.data;
+      print(data);
+      toast("Évènement créé");
+      if (response.statusCode != 400) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+    static Future<bool> joinEvent(var mydata) async {
+    String token = await getToken();
+    var dio = Dio();
+    try {
+      final response =
+          await dio.post(APiConstants.BASEURL + "api/events/myevent/",
+              data: mydata,
+              options: Options(headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token",
+              }));
+
+      Map<String, dynamic> data = response.data;
+      print(data);
+      toast("Évènement créé");
       if (response.statusCode != 400) {
         return true;
       } else {
@@ -259,7 +314,8 @@ class ApiServices {
         data["nom"],
         data["prenom"],
         data["picture_url"],
-        data["profile"]
+        data["profile"],
+        data["id"].toString()
       ]);
       userData = await HelperPreferences.retrieveStringListValue("userData");
       print(userData);
