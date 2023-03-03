@@ -10,17 +10,15 @@ import '../models/event.dart';
 import '../utils/helper_preferences.dart';
 
 class ApiServices {
-  
-
-   static Future<List<EventModel>> getEventWhoMyGuest() async {
+  static Future<List<EventModel>> getEventWhoMyGuest() async {
     List<EventModel> events = [];
     var dio = Dio();
     try {
       var response;
-      
-        response =
-            await dio.get(APiConstants.BASEURL + "api/events/event_list_guest");
-     
+
+      response =
+          await dio.get(APiConstants.BASEURL + "api/events/event_list_guest");
+
       print(response.statusCode);
       print(response.data);
 
@@ -176,13 +174,13 @@ class ApiServices {
     }
   }
 
-    static Future<bool> joinEvent(var mydata) async {
+  static Future<bool> joinEvent(String code_adhesion, int id) async {
     String token = await getToken();
     var dio = Dio();
     try {
       final response =
-          await dio.post(APiConstants.BASEURL + "api/events/myevent/",
-              data: mydata,
+          await dio.post(APiConstants.BASEURL + "api/events/join/event/$id",
+              data: {"code_adhesion": code_adhesion},
               options: Options(headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer $token",
@@ -190,7 +188,7 @@ class ApiServices {
 
       Map<String, dynamic> data = response.data;
       print(data);
-      toast("Évènement créé");
+      toast("Évènement rejoint ! ");
       if (response.statusCode != 400) {
         return true;
       } else {

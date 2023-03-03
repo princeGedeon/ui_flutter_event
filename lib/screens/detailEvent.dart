@@ -14,11 +14,15 @@ class DetailEvent extends StatefulWidget {
   final int id;
 
   @override
-  State<DetailEvent> createState() => _DetailEventState();
+  State<DetailEvent> createState() {
+    initializeDateFormatting().then((value) => _DetailEventState());
+    return _DetailEventState();
+  }
 }
 
 class _DetailEventState extends State<DetailEvent> {
   late EventModel event;
+  bool loading = false;
   DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm', 'fr_FR');
 
   @override
@@ -162,9 +166,19 @@ class _DetailEventState extends State<DetailEvent> {
                     ),
                     CupertinoButton(
                         color: myBlue,
-                        child: Text("Participer"),
+                        child: (!loading)
+                            ? Text("Participer")
+                            : CircularProgressIndicator(),
                         onPressed: () {
-                          
+                          setState(() {
+                            loading = true;
+                          });
+                          ApiServices.joinEvent(event.code_adhesion!, event.id)
+                              .then((value) {
+                            setState(() {
+                              loading = false;
+                            });
+                          });
                         })
                   ]),
             ),
