@@ -15,19 +15,22 @@ class ApiServices {
     String token=await getToken();
     var dio = Dio();
     try {
+
       var response;
 
-      response =await dio.get(APiConstants.BASEURL + "api/events/event_list_guest");
+      response =await dio.get(APiConstants.BASEURL + "api/events/event_list_guest",options: Options(headers: {
+        "Content-Type": "application/json", "Authorization": "Bearer $token"},));
 
       print(response.statusCode);
       print(response.data);
 
       if (response.statusCode != 400) {
-        response.data['results'].forEach((element) {
+        response.data.forEach((element) {
           events.add(EventModel.fromMap(element));
         });
 
         return events;
+        print("dfndjfhdjfhdjhf");
       } else {
         return events;
       }
@@ -50,10 +53,12 @@ class ApiServices {
       "Content-Type": "application/json", "Authorization": "Bearer $token"},));
 
       print(response.statusCode);
-      print(response.data);
+      print("hhdhfhdfhdhfhdfd");
 
       if (response.statusCode != 400) {
+
         response.data.forEach((element) {
+          print("hu");
           events.add(EventModel.fromMap(element));
         });
 
