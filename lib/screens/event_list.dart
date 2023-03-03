@@ -50,7 +50,51 @@ class _EventListState extends State<EventList> {
                 child: Column(
                   children: [
 
-                    userData[4] != "STANDART"?Container():Container(child:events2.length == 0
+                    userData[4] != "STANDART"?Container():Container(child:event3.length == 0
+                        ? Card(
+                      elevation: 20,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            right: 40, left: 40, top: 10, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Evenements créé",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16)),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text("Vous êtes prémiums ..Créer des événements")
+                          ],
+                        ),
+                      ),
+                    )
+                        : Container(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: event3.length,
+                          itemBuilder: ((context, index) {
+                            return eventTile(event3[index]);
+                          }),
+                        )),),
+                        SizedBox(
+                          height: 20,
+                        ) ,
+
+
+                    Text(
+                      "Evenements participés",
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    events2.length == 0
                         ? Card(
                       elevation: 20,
                       shape: RoundedRectangleBorder(
@@ -68,7 +112,7 @@ class _EventListState extends State<EventList> {
                             SizedBox(
                               height: 25,
                             ),
-                            Text("Inscrivez vous à des événements")
+                            Text("Rejoindre des événements")
                           ],
                         ),
                       ),
@@ -80,49 +124,7 @@ class _EventListState extends State<EventList> {
                           itemBuilder: ((context, index) {
                             return eventTile(events2[index]);
                           }),
-                        )),),
-                        SizedBox(
-                          height: 20,
-                        ) ,
-                    Text(
-                      "Evenements crées",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    event3.length == 0
-                        ? Card(
-                            elevation: 20,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  right: 40, left: 40, top: 10, bottom: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text("Vous n'avez créé aucun événement",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16)),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  Text("Créer à des événements")
-                                ],
-                              ),
-                            ),
-                          )
-                        : Container(
-                            child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: event3.length,
-                            itemBuilder: ((context, index) {
-                              return eventTile(event3[index]);
-                            }),
-                          )),
+                        )),
                     SizedBox(
                       height: 20,
                     ),
@@ -130,7 +132,7 @@ class _EventListState extends State<EventList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Événements publiques",
+                          "Événements disponibles",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
