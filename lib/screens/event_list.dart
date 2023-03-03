@@ -24,6 +24,7 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   List<EventModel> events = [];
   bool loading = true;
+  List<EventModel> events2 = [];
 
   @override
   void initState() {
@@ -31,6 +32,9 @@ class _EventListState extends State<EventList> {
     // TODO: implement initState
     getAllEvent();
     getUser();
+    getAllEventWhoGuest();
+
+    super.initState();
   }
 
   @override
@@ -51,27 +55,37 @@ class _EventListState extends State<EventList> {
                     SizedBox(
                       height: 20,
                     ),
-                    Card(
-                      elevation: 20,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            right: 40, left: 40, top: 10, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Vous ne participez à aucun événement",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16)),
-                            SizedBox(
-                              height: 25,
+                    events2.length == 0
+                        ? Card(
+                            elevation: 20,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  right: 40, left: 40, top: 10, bottom: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Vous ne participez à aucun événement",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16)),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text("Inscrivez vous à des événements")
+                                ],
+                              ),
                             ),
-                            Text("Inscrivez vous à des événements")
-                          ],
-                        ),
-                      ),
-                    ),
+                          )
+                        : Container(
+                            child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: events2.length,
+                            itemBuilder: ((context, index) {
+                              return eventTile(events2[index]);
+                            }),
+                          )),
                     SizedBox(
                       height: 20,
                     ),
@@ -213,8 +227,15 @@ class _EventListState extends State<EventList> {
     print(events);
   }
 
+  Future<void> getAllEventWhoGuest() async {
+    events2 = await ApiServices.getEventWhoMyGuest();
+    setState(() {});
+    print(events2);
+  }
+
   Future<void> refresh() {
     getAllEvent();
+    getAllEventWhoGuest();
     return Future.delayed(Duration(seconds: 0));
   }
 }
