@@ -25,6 +25,7 @@ class _EventListState extends State<EventList> {
   List<EventModel> events = [];
   bool loading = true;
   List<EventModel> events2 = [];
+  List<EventModel> event3 =[];
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _EventListState extends State<EventList> {
     getAllEvent();
     getUser();
     getAllEventWhoGuest();
+    getAllEventWhoCreate();
 
     super.initState();
   }
@@ -47,15 +49,50 @@ class _EventListState extends State<EventList> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+
+                    userData[4] != "STANDART"?Container():Container(child:events2.length == 0
+                        ? Card(
+                      elevation: 20,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            right: 40, left: 40, top: 10, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Vous ne participez à aucun événement",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16)),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text("Inscrivez vous à des événements")
+                          ],
+                        ),
+                      ),
+                    )
+                        : Container(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: events2.length,
+                          itemBuilder: ((context, index) {
+                            return eventTile(events2[index]);
+                          }),
+                        )),),
+                        SizedBox(
+                          height: 20,
+                        ) ,
                     Text(
-                      "Vos événements",
+                      "Evenements crées",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    events2.length == 0
+                    event3.length == 0
                         ? Card(
                             elevation: 20,
                             shape: RoundedRectangleBorder(
@@ -66,14 +103,14 @@ class _EventListState extends State<EventList> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text("Vous ne participez à aucun événement",
+                                  Text("Vous n'avez créé aucun événement",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16)),
                                   SizedBox(
                                     height: 25,
                                   ),
-                                  Text("Inscrivez vous à des événements")
+                                  Text("Créer à des événements")
                                 ],
                               ),
                             ),
@@ -81,9 +118,9 @@ class _EventListState extends State<EventList> {
                         : Container(
                             child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: events2.length,
+                            itemCount: event3.length,
                             itemBuilder: ((context, index) {
-                              return eventTile(events2[index]);
+                              return eventTile(event3[index]);
                             }),
                           )),
                     SizedBox(
@@ -233,9 +270,16 @@ class _EventListState extends State<EventList> {
     print(events2);
   }
 
+  Future<void> getAllEventWhoCreate() async {
+    event3 = await ApiServices.getEventWhoMyGuest();
+    setState(() {});
+    print(event3);
+  }
+
   Future<void> refresh() {
     getAllEvent();
     getAllEventWhoGuest();
+    getAllEventWhoCreate();
     return Future.delayed(Duration(seconds: 0));
   }
 }
