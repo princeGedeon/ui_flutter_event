@@ -184,7 +184,7 @@ class _DetailEventState extends State<DetailEvent> {
                               });
                             });
                           } else {
-                            navigateToNextPage(context, JoinEvent());
+                            navigateToNextPage(context, JoinEvent(event: event,));
                           }
                         })
                   ]),

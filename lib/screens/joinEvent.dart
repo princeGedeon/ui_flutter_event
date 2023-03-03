@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperevent.dart';
+import 'package:ui_event_app/models/event.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:ui_event_app/services/apiServices.dart';
 
 class JoinEvent extends StatefulWidget {
-  const JoinEvent({Key? key}) : super(key: key);
+  final EventModel event;
+  const JoinEvent({Key? key, required this.event}) : super(key: key);
 
   @override
   State<JoinEvent> createState() => _JoinEventState();
 }
 
 class _JoinEventState extends State<JoinEvent> {
+  DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm', 'fr_FR');
+  bool loading = false;
+  TextEditingController code_adhesion = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
     return WrapperEvent(
         floatingButton: false,
         child: Padding(
@@ -28,7 +37,7 @@ class _JoinEventState extends State<JoinEvent> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        "GALA",
+                        widget.event.title,
                         style: TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 25),
                       ),
@@ -51,31 +60,10 @@ class _JoinEventState extends State<JoinEvent> {
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    "  12 janvier 2023",
+                    dateFormat.format(DateTime.parse(widget.event.start_date)),
                     style: TextStyle(fontSize: 16),
                   )
                 ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 15, bottom: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      "Organisé par:",
-                      style: TextStyle(
-                          color: Color.fromARGB(
-                            255,
-                            115,
-                            255,
-                            119,
-                          ),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Text("  Ministre des sports",
-                        style: TextStyle(fontSize: 16))
-                  ],
-                ),
               ),
               Padding(
                 padding: EdgeInsets.all(35),
@@ -87,12 +75,9 @@ class _JoinEventState extends State<JoinEvent> {
               SizedBox(
                 height: 120,
               ),
-              const Text(
-                "_ _ _ _ _ _",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800),
+              TextFormField(
+                controller: code_adhesion,
+                decoration: InputDecoration(hintText: "Code de participation"),
               ),
               SizedBox(
                 height: 20,
@@ -103,11 +88,23 @@ class _JoinEventState extends State<JoinEvent> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    'Envoyer',
-                    style: TextStyle(color: Colors.white),
-                  )),
+                  onPressed: () {
+                    setState(() {
+                      loading = true;
+                    });
+                    ApiServices.joinEvent(code_adhesion.text, widget.event.id)
+                        .then((value) {
+                      setState(() {
+                        loading = false;
+                      });
+                    });
+                  },
+                  child: (!loading)
+                      ? Text(
+                          'Envoyer',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : CircularProgressIndicator()),
               Divider(
                 height: 20,
                 color: Color.fromARGB(255, 0, 0, 0),

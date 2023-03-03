@@ -224,8 +224,8 @@ class ApiServices {
 
       Map<String, dynamic> data = response.data;
       print(data);
-      toast("Évènement rejoint ! ");
       if (response.statusCode != 400) {
+      toast("Évènement rejoint ! ");
         return true;
       } else {
         return false;
