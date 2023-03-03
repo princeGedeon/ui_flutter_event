@@ -86,14 +86,14 @@ AppBar customAppBar() {
               style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
-                  fontSize: 23),
+                  fontSize: 18),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
               "Graphic Designer",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           ],
         )

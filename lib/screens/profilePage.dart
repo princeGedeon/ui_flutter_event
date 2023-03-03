@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ui_event_app/components/global.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
+import 'package:ui_event_app/constants/constant.dart';
+import 'package:ui_event_app/screens/optionsPage.dart';
+import 'package:ui_event_app/services/apiServices.dart';
+import 'package:ui_event_app/utils/app_func.dart';
 
 import '../components/input.dart';
 
@@ -11,6 +17,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController firstnamecontroller = TextEditingController();
+  TextEditingController telcontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return WrapperProfile(
@@ -22,31 +32,52 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(
             height: 35,
           ),
-          Input(nom: "Nom", icon: null, inputType: TextInputType.text),
-          Input(nom: "Prénom", icon: null, inputType: TextInputType.text),
           Input(
-              nom: "Numero de telephone :",
-              icon: null,
-              inputType: TextInputType.number),
-          Input(nom: "email", icon: null, inputType: TextInputType.number),
+            nom: "Nom",
+            icon: null,
+            inputType: TextInputType.text,
+            controller: namecontroller,
+          ),
+          Input(
+            nom: "Prénom",
+            icon: null,
+            inputType: TextInputType.text,
+            controller: firstnamecontroller,
+          ),
+          Input(
+            nom: "Numero de telephone :",
+            icon: null,
+            inputType: TextInputType.number,
+            controller: telcontroller,
+          ),
           SizedBox(
             height: 10,
           ),
-          ElevatedButton(
-            onPressed: () {},
+          CupertinoButton(
+            color: myBlue,
+            onPressed: () {
+              if (![
+                namecontroller.text,
+                firstnamecontroller.text,
+                telcontroller.text
+              ].contains("")) {
+                var mydata = {
+                  "nom": namecontroller.text,
+                  "prenom": firstnamecontroller.text,
+                  "number_phone": telcontroller.text
+                };
+                print(mydata);
+                ApiServices.editUser(mydata).then((value) =>
+                    navigateToNextPage(context, OptionsPage(), back: false));
+              } else {
+                red_toast("Veuillez remplir tous les champs");
+              }
+            },
             child: Text(
-              "Completer profile",
-              style: TextStyle(color: Colors.white, fontSize: 30),
+              "Modifier",
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            style: ElevatedButton.styleFrom(
-                minimumSize: Size(250, 50),
-                primary: Colors.greenAccent,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0,
-                    ),
-                    borderRadius: BorderRadius.circular(10))),
+            borderRadius: BorderRadius.circular(10),
           ),
           SizedBox(
             height: 90,

@@ -25,7 +25,7 @@ class _OptionsPageState extends State<OptionsPage> {
               navigateToNextPage(context, ProfilePage());
             },
             child: Text(
-              "COMPLETER VOTRE PROFIL",
+              "MODIFIER VOS INFORMATIONS",
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
@@ -55,9 +55,9 @@ class _OptionsPageState extends State<OptionsPage> {
               ),
             ),
             icon: Icon(
-              Icons.precision_manufacturing_outlined,
+              Icons.star,
               size: 30,
-              color: Colors.black,
+              color: Colors.yellow[400],
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(300, 50),

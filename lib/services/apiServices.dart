@@ -92,6 +92,32 @@ class ApiServices {
     }
   }
 
+  static Future<bool> editUser(var mydata) async {
+    String token = await getToken();
+    var dio = Dio();
+    try {
+      final response = await dio.post(APiConstants.BASEURL + "api/user/update/",
+          data: mydata,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          }));
+
+      Map<String, dynamic> data = response.data;
+      getUser();
+      print(data);
+
+      if (response.statusCode != 400) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   static Future<bool> changepassword(
       String password, String password2, String token, String uid) async {
     var dio = Dio();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/components/wrapperprofile.dart';
-import 'package:ui_event_app/screens/paiementPage.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';

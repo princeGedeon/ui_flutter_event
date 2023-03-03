@@ -62,8 +62,8 @@ class WrapperEvent extends StatelessWidget {
                           color: Colors.white,
                         ),
                         onPressed: () async {
-                          ApiServices.getUser();
-                          navigateToNextPage(context, OptionsPage());
+                          ApiServices.getUser().then((value) =>
+                              navigateToNextPage(context, OptionsPage()));
                         }),
                   ],
                 ),
