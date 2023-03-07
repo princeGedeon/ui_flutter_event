@@ -3,7 +3,9 @@ import 'package:ui_event_app/components/wrapperevent.dart';
 import 'package:ui_event_app/models/event.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:ui_event_app/screens/event_list.dart';
 import 'package:ui_event_app/services/apiServices.dart';
+import 'package:ui_event_app/utils/app_func.dart';
 
 class JoinEvent extends StatefulWidget {
   final EventModel event;
@@ -97,6 +99,7 @@ class _JoinEventState extends State<JoinEvent> {
                       setState(() {
                         loading = false;
                       });
+                      navigateToNextPage(context, EventList());
                     });
                   },
                   child: (!loading)
