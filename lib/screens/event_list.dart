@@ -68,7 +68,7 @@ class _EventListState extends State<EventList> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Text("Evenements créé",
+                                          Text("Evenements créés",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16)),
@@ -81,25 +81,38 @@ class _EventListState extends State<EventList> {
                                       ),
                                     ),
                                   )
-                                : Container(
-                                    height: 100,
-                                    width: getSize(context).width,
-                                    child: Expanded(
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: event3.length,
-                                        itemBuilder: ((context, index) {
-                                          return eventTile(
-                                              event3[index], Colors.cyan);
-                                        }),
+                                : Column(
+                                    children: [
+                                      Text(
+                                        "Evenements créés",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
                                       ),
-                                    )),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Container(
+                                          height: 100,
+                                          width: getSize(context).width,
+                                          child: Expanded(
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: event3.length,
+                                              itemBuilder: ((context, index) {
+                                                return eventTile(
+                                                    event3[index], Colors.cyan);
+                                              }),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
                           ),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      "Evenements participés",
+                      "Evenements rejoints",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
@@ -130,7 +143,7 @@ class _EventListState extends State<EventList> {
                             ),
                           )
                         : Container(
-                            height: 200,
+                            height: 100,
                             width: getSize(context).width,
                             child: Expanded(
                               child: ListView.builder(
