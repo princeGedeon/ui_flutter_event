@@ -25,7 +25,7 @@ class _EventListState extends State<EventList> {
   List<EventModel> events = [];
   bool loading = true;
   List<EventModel> events2 = [];
-  List<EventModel> event3 =[];
+  List<EventModel> event3 = [];
 
   @override
   void initState() {
@@ -49,91 +49,100 @@ class _EventListState extends State<EventList> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-
-                    userData[4] == "STANDART"?Container():Container(child:event3.length == 0
-                        ? Card(
-                      elevation: 20,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            right: 40, left: 40, top: 10, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Evenements créé",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16)),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Text("Vous êtes prémiums ..Créer des événements")
-                          ],
-                        ),
-                      ),
-                    )
+                    userData[4] == "STANDART"
+                        ? Container()
                         : Container(
-                      height: 100,
-                        width: getSize(context).width,
-                        child: Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: event3.length,
-                            itemBuilder: ((context, index) {
-                              return eventTile(event3[index],Colors.cyan);
-                            }),
+                            child: event3.length == 0
+                                ? Card(
+                                    elevation: 20,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                          right: 40,
+                                          left: 40,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Evenements créé",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16)),
+                                          SizedBox(
+                                            height: 25,
+                                          ),
+                                          Text(
+                                              "Vous êtes prémiums ..Créer des événements")
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 100,
+                                    width: getSize(context).width,
+                                    child: Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: event3.length,
+                                        itemBuilder: ((context, index) {
+                                          return eventTile(
+                                              event3[index], Colors.cyan);
+                                        }),
+                                      ),
+                                    )),
                           ),
-                        )),),
-                        SizedBox(
-                          height: 20,
-                        ) ,
-
-
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Evenements participés",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     events2.length == 0
                         ? Card(
-                      elevation: 20,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            right: 40, left: 40, top: 10, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Vous ne participez à aucun événement",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16)),
-                            SizedBox(
-                              height: 25,
+                            elevation: 20,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  right: 40, left: 40, top: 10, bottom: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("Vous ne participez à aucun événement",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16)),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text("Rejoindre des événements")
+                                ],
+                              ),
                             ),
-                            Text("Rejoindre des événements")
-                          ],
-                        ),
-                      ),
-                    )
+                          )
                         : Container(
-
-                        height: 200,
-                        width: getSize(context).width,
-                        child: Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: events2.length,
-                            itemBuilder: ((context, index) {
-                              return Container(child:eventTile(events2[index],Colors.blueAccent));
-                            }),
-                          ),
-                        )),
+                            height: 200,
+                            width: getSize(context).width,
+                            child: Expanded(
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: events2.length,
+                                itemBuilder: ((context, index) {
+                                  return Container(
+                                      child: eventTile(
+                                          events2[index], Colors.blueAccent));
+                                }),
+                              ),
+                            )),
                     SizedBox(
                       height: 20,
                     ),
@@ -175,7 +184,8 @@ class _EventListState extends State<EventList> {
                                       child: ListView.builder(
                                         itemBuilder:
                                             (BuildContext context, index) {
-                                          return eventTile(events[index],Colors.orangeAccent);
+                                          return eventTile(events[index],
+                                              Colors.orangeAccent);
                                         },
                                         itemCount: events.length,
                                       ),
@@ -236,9 +246,9 @@ class _EventListState extends State<EventList> {
     } else {}
   }
 
-  Widget eventTile(EventModel event,Color color_t) {
+  Widget eventTile(EventModel event, Color color_t) {
     return Container(
-      width: getSize(context).width*0.8,
+      width: getSize(context).width * 0.8,
       child: InkWell(
           child: Card(
             shape:
@@ -254,15 +264,6 @@ class _EventListState extends State<EventList> {
               subtitle: Text(
                 formarDate(convertDate(event.start_date)),
                 style: TextStyle(color: Colors.white),
-              ),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "Groupe ABE",
-                    style: TextStyle(color: Colors.white),
-                  )
-                ],
               ),
             ),
           ),
