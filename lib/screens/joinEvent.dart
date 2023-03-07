@@ -68,7 +68,7 @@ class _JoinEventState extends State<JoinEvent> {
               Padding(
                 padding: EdgeInsets.all(35),
                 child: Text(
-                  "Un code participatioon vous a été envoyé par mail",
+                  "Un code participatioon est exigé pour cet évènement",
                   style: TextStyle(color: Color.fromARGB(255, 192, 181, 181)),
                 ),
               ),

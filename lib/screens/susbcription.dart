@@ -31,8 +31,8 @@ class _SusbcriptionState extends State<Susbcription> {
                     amount: 10000,
                     countries: ["BJ"],
                     phone: "22961000000",
-                    name: "GUEDJE Prince Gédéon",
-                    email: "email@mail.com",
+                    name: "",
+                    email: "",
                     reason: 'Evenement',
                     data: 'Fake data',
                     sandbox: true,
@@ -100,11 +100,11 @@ class _SusbcriptionState extends State<Susbcription> {
               onPressed: () {
                 // navigateToNextPage(context, PaiementPage());
                 final kkiapay = KKiaPay(
-                    amount: 10000,
+                    amount: 20000,
                     countries: ["BJ"],
                     phone: "22961000000",
-                    name: "GUEDJE Prince Gédéon",
-                    email: "email@mail.com",
+                    name: " ",
+                    email: " ",
                     reason: 'Evenement',
                     data: 'Fake data',
                     sandbox: true,

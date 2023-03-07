@@ -92,7 +92,7 @@ AppBar customAppBar() {
               height: 10,
             ),
             Text(
-              "Graphic Designer",
+              "Profil",
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           ],

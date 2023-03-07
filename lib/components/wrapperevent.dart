@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_event_app/constants/constant.dart';
 import 'package:ui_event_app/screens/createEvent.dart';
+import 'package:ui_event_app/screens/event_list.dart';
 import 'package:ui_event_app/screens/optionsPage.dart';
 import 'package:ui_event_app/services/apiServices.dart';
 import 'package:ui_event_app/utils/app_func.dart';
@@ -71,7 +72,7 @@ class _WrapperEventState extends State<WrapperEvent> {
                           alignment: Alignment.topRight,
                           children: [
                             Icon(
-                              Icons.notifications,
+                              Icons.home,
                               size: 40,
                               color: Colors.white,
                             ),
@@ -79,13 +80,15 @@ class _WrapperEventState extends State<WrapperEvent> {
                               radius: 6,
                               backgroundColor: Colors.redAccent,
                               child: Text(
-                                "12",
+                                "",
                                 style: TextStyle(fontSize: 8),
                               ),
                             )
                           ],
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          navigateToNextPage(context, EventList(), back: false);
+                        }),
                     IconButton(
                         icon: (!account_loading)
                             ? const Icon(
